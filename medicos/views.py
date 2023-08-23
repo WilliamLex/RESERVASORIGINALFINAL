@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Medico, Agenda, Especialidade
+from .models import Medico, Agenda, Carreras
 
 
 class TestMixinIsAdmin(UserPassesTestMixin):
@@ -36,7 +36,7 @@ class MedicoListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     
 class EspecialidadeCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
 
-    model = Especialidade
+    model = Carreras
     login_url = 'accounts:login'
     template_name = 'medicos/cadastro.html'
     fields = ['nome',]
@@ -48,7 +48,7 @@ class EspecialidadeListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     template_name = 'medicos/especialidade_list.html'
 
     def get_queryset(self):
-        return Especialidade.objects.all().order_by('-pk')
+        return Carreras.objects.all().order_by('-pk')
 
 
 class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):

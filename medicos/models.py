@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.db.models.fields.related import ForeignKey
 
-class Especialidade(models.Model):
+class Carreras(models.Model):
     nome = models.CharField(verbose_name="Nome", max_length=200)
     
     def __str__(self):
@@ -23,7 +23,7 @@ class Medico(models.Model):
     telefone = models.CharField(verbose_name="Telefone",
                                 validators=[phone_regex],
                                 max_length=17, null=True, blank=True)
-    especialidade = ForeignKey(Especialidade,
+    especialidade = ForeignKey(Carreras,
                                on_delete=models.CASCADE,
                                related_name='medicos')
     
