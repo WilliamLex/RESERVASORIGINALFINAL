@@ -28,13 +28,13 @@
             </li>
             {% if user.is_staff or user.is_superuser %}
             <li>
-              <a href="{% url 'reservas:agendar_consulta'%}">Agendas</a>
+              <a href="{% url 'reservas:agendar_reserva'%}">Agendas</a>
             </li>
             <li>
-              <a href="{% url 'reservas:medico_cadastro'%}">Laboratorios</a>
+              <a href="{% url 'reservas:laboratorio_registro'%}">Laboratorios</a>
             </li>
             <li>
-              <a href="{% url 'reservas:especialidade_cadastro'%}">Carreras</a>
+              <a href="{% url 'reservas:carreras_registro'%}">Carreras</a>
             </li>
             {% endif %}
           </ul>

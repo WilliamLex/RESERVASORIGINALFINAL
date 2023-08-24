@@ -22,14 +22,14 @@ class MedicoCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
 
     model = Laboratorios
     login_url = 'accounts:login'
-    template_name = 'reservas/cadastro.html'
+    template_name = 'reservas/registro.html'
     fields = ['nome', 'crm', 'email', 'telefone', 'especialidade']
-    success_url = reverse_lazy('reservas:medicos_lista')
+    success_url = reverse_lazy('reservas:laboratorio_lista')
     
 class MedicoListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     
     login_url = 'accounts:login'
-    template_name = 'reservas/medicos_list.html'
+    template_name = 'reservas/laboratorios_lista.html'
 
     def get_queryset(self):
         return Laboratorios.objects.all().order_by('-pk')
@@ -38,14 +38,14 @@ class EspecialidadeCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
 
     model = Carreras
     login_url = 'accounts:login'
-    template_name = 'reservas/cadastro.html'
+    template_name = 'reservas/registro.html'
     fields = ['nome',]
-    success_url = reverse_lazy('reservas:especialidade_lista')
+    success_url = reverse_lazy('reservas:carreras_lista')
     
 class EspecialidadeListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     
     login_url = 'accounts:login'
-    template_name = 'reservas/especialidade_list.html'
+    template_name = 'reservas/carreras_lista.html'
 
     def get_queryset(self):
         return Carreras.objects.all().order_by('-pk')
@@ -55,7 +55,7 @@ class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
 
     model = Agenda
     login_url = 'accounts:login'
-    template_name = 'reservas/agenda_cadastro.html'
+    template_name = 'reservas/agenda_registro.html'
     fields = ['laboratorio', 'dia', 'horario']
     success_url = reverse_lazy('reservas:agenda_lista')
     
@@ -67,7 +67,7 @@ class AgendaUpdateView(LoginRequiredMixin, TestMixinIsAdmin, UpdateView):
 
     model = Agenda
     login_url = 'accounts:login'
-    template_name = 'reservas/agenda_cadastro.html'
+    template_name = 'reservas/agenda_registro.html'
     fields = ['laboratorio', 'dia', 'horario']
     success_url = reverse_lazy('reservas:agenda_lista')
     
@@ -78,7 +78,7 @@ class AgendaUpdateView(LoginRequiredMixin, TestMixinIsAdmin, UpdateView):
 class AgendaDeleteView(LoginRequiredMixin, TestMixinIsAdmin, DeleteView):
     model = Agenda
     success_url = reverse_lazy('reservas:agenda_lista')
-    template_name = 'form_delete.html'
+    template_name = 'eliminar_formulario.html'
 
     def get_success_url(self):
         messages.success(self.request, "¡Reserva eliminada exitosamente!")
@@ -93,12 +93,12 @@ class AgendaListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     def get_queryset(self):
         return Agenda.objects.filter().order_by('-pk')
     
-medico_cadastro = MedicoCreateView.as_view()
-medico_lista = MedicoListView.as_view()
-especialidade_cadastro = EspecialidadeCreateView.as_view()
-especialidade_lista = EspecialidadeListView.as_view()
-agenda_cadastro = AgendaCreateView.as_view()
-agenda_atualizar = AgendaUpdateView.as_view()
+laboratorio_registro = MedicoCreateView.as_view()
+laboratorio_lista = MedicoListView.as_view()
+carreras_registro = EspecialidadeCreateView.as_view()
+carreras_lista = EspecialidadeListView.as_view()
+agenda_registro = AgendaCreateView.as_view()
+agenda_actualizar = AgendaUpdateView.as_view()
 agenda_lista = AgendaListView.as_view()
-agenda_deletar = AgendaDeleteView.as_view()
+agenda_eliminar = AgendaDeleteView.as_view()
 

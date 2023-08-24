@@ -4,13 +4,13 @@ from . import views
 app_name = 'reservas'
 
 urlpatterns = [
-    path('registro/laboratorio/', views.medico_cadastro, name='medico_cadastro'),
-    path('registro/carreras/', views.especialidade_cadastro, name='especialidade_cadastro'),
-    path('agendar/', views.agenda_cadastro, name='agendar_consulta'),
-    path('agendar/actualizar/<int:pk>/', views.agenda_atualizar, name='agendar_consulta_atualizar'),
-    path('agendar/eliminar/<int:pk>/', views.agenda_deletar, name='agendar_consulta_deletar'),
+    path('registro/laboratorio/', views.laboratorio_registro, name='laboratorio_registro'),
+    path('registro/carreras/', views.carreras_registro, name='carreras_registro'),
+    path('agendar/', views.agenda_registro, name='agendar_reserva'),
+    path('agendar/actualizar/<int:pk>/', views.agenda_actualizar, name='agendar_reserva_actualizar'),
+    path('agendar/eliminar/<int:pk>/', views.agenda_eliminar, name='agendar_reserva_eliminar'),
     path('mis/consultas/', views.agenda_lista, name="agenda_lista"),
-    path('admim/lista/reserva/', views.medico_lista, name="medicos_lista"),
-    path('admim/lista/carreras/', views.especialidade_lista, name="especialidade_lista")
+    path('admim/lista/reserva/', views.laboratorio_lista, name="laboratorio_lista"),
+    path('admim/lista/carreras/', views.carreras_lista, name="carreras_lista")
     
 ]

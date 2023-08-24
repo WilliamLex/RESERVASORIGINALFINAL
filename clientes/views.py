@@ -10,7 +10,7 @@ from .models import Cliente, Consulta
 class ClienteCreateView(LoginRequiredMixin ,CreateView):
     
     model = Cliente
-    template_name = 'clientes/cadastro.html'
+    template_name = 'clientes/registro.html'
     fields = ['telefone', 'carrera']
     success_url = reverse_lazy('index')
     
@@ -42,7 +42,7 @@ class ConsultaCreateView(LoginRequiredMixin, CreateView):
 
     model = Consulta
     login_url = 'accounts:login'
-    template_name = 'clientes/cadastro.html'
+    template_name = 'clientes/registro.html'
     fields = ['agenda']
     success_url = reverse_lazy('clientes:consulta_list')
     
@@ -56,7 +56,7 @@ class ConsultaCreateView(LoginRequiredMixin, CreateView):
                 return HttpResponseRedirect(reverse_lazy('clientes:consulta_create'))
         except Cliente.DoesNotExist:
             messages.warning(self.request, 'Completa tu registro')
-            return HttpResponseRedirect(reverse_lazy('clientes:cliente_cadastro'))
+            return HttpResponseRedirect(reverse_lazy('clientes:cliente_registro'))
         messages.info(self.request, 'Reserva agendada con éxito!')
         return HttpResponseRedirect(reverse_lazy('clientes:consulta_list'))
     
@@ -64,7 +64,7 @@ class ConsultaUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Consulta
     login_url = 'accounts:login'
-    template_name = 'clientes/cadastro.html'
+    template_name = 'clientes/registro.html'
     fields = ['agenda']
     success_url = reverse_lazy('reservas:Consulta_lista')
     
@@ -75,7 +75,7 @@ class ConsultaUpdateView(LoginRequiredMixin, UpdateView):
 class ConsultaDeleteView(LoginRequiredMixin, DeleteView):
     model = Consulta
     success_url = reverse_lazy('clientes:consulta_list')
-    template_name = 'form_delete.html'
+    template_name = 'eliminar_formulario.html'
 
     def get_success_url(self):
         messages.success(self.request, "Reserva eliminada con éxito!")
@@ -102,9 +102,9 @@ class ConsultaListView(LoginRequiredMixin, ListView):
         return consultas
 
 
-cliente_cadastro = ClienteCreateView.as_view()
-cliente_atualizar = ClienteUpdateView.as_view()
+cliente_registro = ClienteCreateView.as_view()
+cliente_actualizar = ClienteUpdateView.as_view()
 consulta_lista = ConsultaListView.as_view()
-consulta_cadastro = ConsultaCreateView.as_view()
-consulta_atualizar = ConsultaUpdateView.as_view()
+consulta_registro = ConsultaCreateView.as_view()
+consulta_actualizar = ConsultaUpdateView.as_view()
 consulta_excluir = ConsultaDeleteView.as_view()

@@ -42,10 +42,10 @@
                 {{ consulta.agenda.get_horario_display }}
             </td>
             <td>
-                <a href="{% url 'reservas:agendar_consulta_atualizar' consulta.id %}" class="text-primary" style="padding-left: 10px; text-decoration: none;">
+                <a href="{% url 'reservas:agendar_reserva_actualizar' consulta.id %}" class="text-primary" style="padding-left: 10px; text-decoration: none;">
                     <i class="fas fa-edit"></i>
                 </a>
-                <a href="{% url 'reservas:agendar_consulta_deletar' consulta.id %}" class="mr-1 text-danger" style="padding-left: 10px; text-decoration: none;">
+                <a href="{% url 'reservas:agendar_reserva_eliminar' consulta.id %}" class="mr-1 text-danger" style="padding-left: 10px; text-decoration: none;">
                     <i class="fas fa-trash-alt"></i>
                 </a>
             </td>
