@@ -8,8 +8,8 @@ class Cliente(models.Model):
     
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',
-        message="O número precisa estar neste formato: \
-                        '+99 99 9999-0000'.")
+        message="El número debe estar en este formato.: \
+                        '+593 999999999'.")
 
     telefone = models.CharField(verbose_name="Telefono",
                                 validators=[phone_regex],

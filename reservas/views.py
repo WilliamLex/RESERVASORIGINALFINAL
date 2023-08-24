@@ -14,7 +14,7 @@ class TestMixinIsAdmin(UserPassesTestMixin):
 
     def handle_no_permission(self):
         messages.error(
-            self.request, "Você não tem permissões!"
+            self.request, "No tienes permisos!"
         )
         return redirect("accounts:index")
 
@@ -81,7 +81,7 @@ class AgendaDeleteView(LoginRequiredMixin, TestMixinIsAdmin, DeleteView):
     template_name = 'form_delete.html'
 
     def get_success_url(self):
-        messages.success(self.request, "Consulta excluída com sucesso!")
+        messages.success(self.request, "¡Reserva eliminada exitosamente!")
         return reverse_lazy('reservas:agenda_lista')
 
 
