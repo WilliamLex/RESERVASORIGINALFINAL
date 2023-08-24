@@ -6,26 +6,26 @@ from django.core.exceptions import ValidationError
 from django.db.models.fields.related import ForeignKey
 
 class Carreras(models.Model):
-    nome = models.CharField(verbose_name="Nome", max_length=200)
+    nome = models.CharField(verbose_name="Nombre", max_length=200)
     
     def __str__(self):
         return f'{self.nome}'
     
-class Medico(models.Model):
-    nome = models.CharField(verbose_name="Nome", max_length=200)
-    email = models.EmailField(verbose_name="Email")
+class Laboratorios(models.Model):
+    nome = models.CharField(verbose_name="Nombre del laboratorio", max_length=200)
+    email = models.EmailField(verbose_name="Correo electronico")
     crm = models.CharField(verbose_name="CRM", max_length=200)
     phone_regex = RegexValidator(
     regex=r'^\+?1?\d{9,15}$',
     message="O número precisa estar neste formato: \
                     '+99 99 9999-0000'.")
 
-    telefone = models.CharField(verbose_name="Telefone",
+    telefone = models.CharField(verbose_name="Telefono",
                                 validators=[phone_regex],
                                 max_length=17, null=True, blank=True)
     especialidade = ForeignKey(Carreras,
                                on_delete=models.CASCADE,
-                               related_name='medicos')
+                               related_name='reservas')
     
     def __str__(self):
         return f'{self.nome}'
@@ -40,7 +40,7 @@ def validar_dia(value):
         raise ValidationError('Escolha um dia útil da semana.')
 
 class Agenda(models.Model):
-    medico = ForeignKey(Medico, on_delete=models.CASCADE, related_name='agenda')
+    laboratorio = ForeignKey(Laboratorios, on_delete=models.CASCADE, related_name='agenda')
     dia = models.DateField(help_text="Insira uma data para agenda", validators=[validar_dia])
     
     HORARIOS = (
@@ -61,4 +61,4 @@ class Agenda(models.Model):
         unique_together = ('horario', 'dia')
         
     def __str__(self):
-        return f'{self.dia.strftime("%b %d %Y")} - {self.get_horario_display()} - {self.medico}'
+        return f'{self.dia.strftime("%b %d %Y")} - {self.get_horario_display()} - {self.laboratorio}'

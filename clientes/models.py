@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db.models.fields.related import ForeignKey, OneToOneField
 from django.core.validators import RegexValidator
 from django.db import models
-from medicos.models import Agenda
+from reservas.models import Agenda
 
 class Cliente(models.Model):
     
@@ -11,7 +11,7 @@ class Cliente(models.Model):
         message="O número precisa estar neste formato: \
                         '+99 99 9999-0000'.")
 
-    telefone = models.CharField(verbose_name="Telefone",
+    telefone = models.CharField(verbose_name="Telefono",
                                 validators=[phone_regex],
                                 max_length=17, null=True, blank=True)
     

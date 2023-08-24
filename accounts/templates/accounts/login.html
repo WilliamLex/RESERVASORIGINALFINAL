@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 {% block title %}
 
-Entrar | {{ block.super }} 
+Iniciar sesión | {{ block.super }} 
 
 {% endblock title %} 
 {% block container %} 
@@ -10,7 +10,7 @@ Entrar | {{ block.super }}
   <div class="row"> 
   <div class="col-md-8 col-md-offset-2"> 
     <div class="page-header"> 
-        <h1>Entrar</h1>
+        <h1>Iniciar sesión</h1>
         {% for error in form.non_field_errors %}
                   <div class='alert alert-danger'>
                       {{ error }}
@@ -32,7 +32,7 @@ Entrar | {{ block.super }}
                         <div class="form-group {% if form.password.errors %} has-error {% endif %}">
                           <label for="{{form.password.auto_id}}id_email" class="col-md-3 control-label">{{ form.password.label }}</label>
                           <div class="col-md-9">
-                            {% render_field form.password class="form-control" placeholder="Senha" %}
+                            {% render_field form.password class="form-control" placeholder="Contraseña" %}
                             {% for error in form.password.errors %}
                                   <span class="help-block">{{ error }}</span>
                             {% endfor %}

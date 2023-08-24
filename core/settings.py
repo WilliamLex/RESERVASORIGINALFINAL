@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     
     'accounts',
     'clientes',
-    'medicos',
+    'reservas',
 ]
 
 MIDDLEWARE = [
@@ -84,11 +84,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 
-LANGUAGE_CODE = 'pt-br'
+LANGUAGE_CODE = 'es-ec'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Guayaquil'
 
 USE_I18N = True
+
+USE_L10N = True
 
 USE_TZ = True
 
@@ -119,7 +121,7 @@ TEMPLATES = [
     },
 ]
 
-LOGIN = 'conta/entrar'
+LOGIN = 'cuenta/entrar'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT = 'logout'
 AUTH_USER_MODEL = 'accounts.User'

@@ -1,32 +1,32 @@
 {% extends 'base.html'%}
 
 {% block title %}
-    Minha Conta | {{ block.super }}
+    Mi Cuenta  | {{ block.super }}
 {% endblock%}
 
 {% block container %}
      <ol class="breadcrumb">
           <li><a href="{% url 'accounts:index'%}">Início</a></li>
-          <li class="active">Minha Conta</li>
+          <li class="active">Mi Cuenta</li>
         </ol>
         <div class="row">
             <div class="col-md-4">
                 <div class="list-group">
-                  <a href="#" class="list-group-item active">Minha Conta</a>
-                  <a href="{% url 'accounts:update_user'%}" class="list-group-item">Alterar Nome e Email</a>
-                  <a href="{% url 'accounts:update_password'%}" class="list-group-item">Alterar Senha</a>
-                  <a href="{% url 'clientes:cliente_atualizar'%}" class="list-group-item"> Dados Complementares </a>
-                  <a href="{% url 'clientes:consulta_list'%}" class="list-group-item">Minhas Consultas</a>
+                  <a href="#" class="list-group-item active">Mi Cuenta</a>
+                  <a href="{% url 'accounts:update_user'%}" class="list-group-item">Cambiar Nombre y Correo Electrónico</a>
+                  <a href="{% url 'accounts:update_password'%}" class="list-group-item">Cambiar Contraseña</a>
+                  <a href="{% url 'clientes:cliente_atualizar'%}" class="list-group-item"> Datos Complementarios </a>
+                  <a href="{% url 'clientes:consulta_list'%}" class="list-group-item">Mis reservas</a>
                   {% if request.user.is_staff or request.user.is_superuser %}
-                  <a href="{% url 'medicos:agenda_lista'%}" class="list-group-item">Agendas</a>
-                  <a href="{% url 'medicos:medicos_lista'%}" class="list-group-item">Medicos</a>
-                  <a href="{% url 'medicos:especialidade_lista'%}" class="list-group-item">Esialidade</a>
+                  <a href="{% url 'reservas:agenda_lista'%}" class="list-group-item">Agendas</a>
+                  <a href="{% url 'reservas:medicos_lista'%}" class="list-group-item">Laboratorios</a>
+                  <a href="{% url 'reservas:especialidade_lista'%}" class="list-group-item">Carreras</a>
                   {% endif %}
                 </div>
             </div>
             <div class="col-md-8">
             {% block accounts_container %}
-                <h2>Bem vindo {{ user.name }} </h2>
+                <h2>Bienvenido {{ user.name }} </h2>
             {% endblock  %}
                 
             </div>

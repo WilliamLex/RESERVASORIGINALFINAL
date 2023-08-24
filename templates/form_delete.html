@@ -3,20 +3,20 @@
 {% load widget_tweaks %}
 
 {% block title %}
-    Apagar | {{ block.super }}
+    Eliminar | {{ block.super }}
 {% endblock %}
 
 {% block container %}
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <div class="page-header">
-            <h1>Apagar</h1>
+            <h1>Eliminar</h1>
         </div>
         <form action="" method="POST">
-            <p>Deseja realmente excluir: <strong>{{ object }}</strong>?</p>
+            <p>¿Realmente desea eliminar: <strong>{{ object }}</strong>?</p>
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-danger">Excluir</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
             <a href="#" onClick="history.go(-1)" class="btn btn-link"> Cancelar</a>
         </form>
     </div>

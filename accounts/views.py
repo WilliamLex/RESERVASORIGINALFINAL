@@ -47,7 +47,7 @@ class RegisterView(CreateView):
     
     def form_valid(self, form):
         messages.info(
-            self.request, "Cadastro realizado com sucesso! Faça seu login."
+            self.request, "¡Registro completado con éxito! Acceso."
         )
         return super().form_valid(form)
 

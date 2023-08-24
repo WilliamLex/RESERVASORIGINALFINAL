@@ -9,23 +9,23 @@ from django.contrib.auth.models import (
 class User(AbstractBaseUser, PermissionsMixin):
     
     username = models.CharField(
-        'Usuário', max_length=30, unique=True, validators=[
+        'Usuario', max_length=30, unique=True, validators=[
             validators.RegexValidator(
                 re.compile('^[\w.@+-]+$'),
-                'Informe um nome de usuário válido. '
-                'Este valor deve conter apenas letras, números '
-                'e os carecteres: @/./+/-/_.'
-                ,  'invalid'
+                'Proporcione un nombre de usuario válido. '
+                'Este valor debe contener solo letras, números '
+                'y los caracteres: @/./+/-/_.'
+                ,  'inválido'
             )
-        ], help_text='Um nome curto que será usado'+
-                    ' para identificá-lo de forma única na plataforma.'
+        ], help_text='Un nombre corto que se utilizará'+
+                    ' para identificarte de manera única en la plataforma.'
     )
     
-    name = models.CharField('Nome', max_length=100)
-    email = models.EmailField('E-mail', unique=True)
-    is_staff = models.BooleanField('Equipe', default=False)
-    is_active = models.BooleanField('Ativo', default=True)
-    date_joined = models.DateTimeField('Data de Entrada', auto_now_add=True)
+    name = models.CharField('Nombre', max_length=100)
+    email = models.EmailField('Correo Electrónico', unique=True)
+    is_staff = models.BooleanField('Personal', default=False)
+    is_active = models.BooleanField('Activo', default=True)
+    date_joined = models.DateTimeField('Fecha de Ingreso', auto_now_add=True)
 
 
     USERNAME_FIELD = 'username'
@@ -34,8 +34,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     class Meta:
-        verbose_name = 'Usuário'
-        verbose_name_plural = 'Usuários'
+        verbose_name = 'Usuario'
+        verbose_name_plural = 'Usuarios'
 
     def __str__(self):
         return self.name or self.username

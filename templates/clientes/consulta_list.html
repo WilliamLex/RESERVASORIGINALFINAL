@@ -1,11 +1,11 @@
 {% extends "accounts/index.html" %}
 
 {% block title %}
-    Minhas Consultas
+    Mis Reservas
 {% endblock %}
 
 {% block accounts_container %}
-<h2>Minhas Consultas</h2>
+<h2>Mis Reservas</h2>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -13,7 +13,7 @@
                 ID
             </th>
             <th>
-                Medico
+                Laboratorios
             </th>
             <th>
                 Dia
@@ -22,7 +22,7 @@
                 Horario
             </th>
             <th>
-                Opções
+                Opciones
             </th>
         </tr>
     </thead>
@@ -33,7 +33,7 @@
                 <a href=""># {{ consulta.pk }}</a>
             </td>
             <td>
-                {{ consulta.agenda.medico }}
+                {{ consulta.agenda.laboratorio }}
             </td>
             <td>
                 {{ consulta.agenda.dia|date:"d/m/Y" }}
@@ -42,10 +42,10 @@
                 {{ consulta.agenda.get_horario_display }}
             </td>
             <td>
-                <a href="{% url 'medicos:agendar_consulta_atualizar' consulta.id %}" class="text-primary" style="padding-left: 10px; text-decoration: none;">
+                <a href="{% url 'reservas:agendar_consulta_atualizar' consulta.id %}" class="text-primary" style="padding-left: 10px; text-decoration: none;">
                     <i class="fas fa-edit"></i>
                 </a>
-                <a href="{% url 'medicos:agendar_consulta_deletar' consulta.id %}" class="mr-1 text-danger" style="padding-left: 10px; text-decoration: none;">
+                <a href="{% url 'reservas:agendar_consulta_deletar' consulta.id %}" class="mr-1 text-danger" style="padding-left: 10px; text-decoration: none;">
                     <i class="fas fa-trash-alt"></i>
                 </a>
             </td>
