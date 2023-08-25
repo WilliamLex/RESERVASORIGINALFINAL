@@ -6,29 +6,29 @@ from django.core.exceptions import ValidationError
 from django.db.models.fields.related import ForeignKey
 
 class Carreras(models.Model):
-    nome = models.CharField(verbose_name="Nombre", max_length=200)
+    nombre = models.CharField(verbose_name="Nombre", max_length=200)
     
     def __str__(self):
-        return f'{self.nome}'
+        return f'{self.nombre}'
     
 class Laboratorios(models.Model):
-    nome = models.CharField(verbose_name="Nombre del laboratorio", max_length=200)
+    nombre = models.CharField(verbose_name="Nombre del laboratorio", max_length=200)
     email = models.EmailField(verbose_name="Correo electronico")
-    crm = models.CharField(verbose_name="CRM", max_length=200)
+    capacidad = models.CharField(verbose_name="Capacidad", max_length=200)
     phone_regex = RegexValidator(
     regex=r'^\+?1?\d{9,15}$',
     message="El número debe estar en este formato: \
                     '+593 999999999'.")
 
-    telefone = models.CharField(verbose_name="Telefono",
+    telefono = models.CharField(verbose_name="Telefono",
                                 validators=[phone_regex],
                                 max_length=17, null=True, blank=True)
-    especialidade = ForeignKey(Carreras,
+    carreras = ForeignKey(Carreras,
                                on_delete=models.CASCADE,
                                related_name='reservas')
     
     def __str__(self):
-        return f'{self.nome}'
+        return f'{self.nombre}'
 
 def validar_dia(value):
     today = date.today()

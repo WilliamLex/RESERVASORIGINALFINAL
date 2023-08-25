@@ -11,7 +11,7 @@ class Cliente(models.Model):
         message="El número debe estar en este formato.: \
                         '+593 999999999'.")
 
-    telefone = models.CharField(verbose_name="Telefono",
+    telefono = models.CharField(verbose_name="Telefono",
                                 validators=[phone_regex],
                                 max_length=17, null=True, blank=True)
     

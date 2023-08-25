@@ -3,11 +3,11 @@ from django.contrib import admin
 from reservas.models import Carreras, Laboratorios, Agenda
 
 class EspecialidadeAdmin(admin.ModelAdmin):
-    list_display = ['nome']
+    list_display = ['nombre']
     
 class MedicoAdmin(admin.ModelAdmin):
     list_display = [
-        'nome', 'crm', 'telefone',
+        'nombre', 'capacidad', 'telefono',
     ]
     
 class AgendaAdmin(admin.ModelAdmin):
