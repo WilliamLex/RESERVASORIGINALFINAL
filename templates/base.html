@@ -24,11 +24,11 @@
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
             <li>
-              <a href="{% url 'clientes:consulta_create'%}">Reservas laboratorios</a>
+              <a href="{% url 'clientes:consulta_create'%}">Reservas de Laboratorio</a>
             </li>
             {% if user.is_staff or user.is_superuser %}
             <li>
-              <a href="{% url 'reservas:agendar_reserva'%}">Agendas</a>
+              <a href="{% url 'reservas:agendar_reserva'%}">Reservar Horario</a>
             </li>
             <li>
               <a href="{% url 'reservas:laboratorio_registro'%}">Laboratorios</a>
