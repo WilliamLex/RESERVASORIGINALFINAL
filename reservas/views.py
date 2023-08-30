@@ -18,15 +18,15 @@ class TestMixinIsAdmin(UserPassesTestMixin):
         )
         return redirect("accounts:index")
 
-class MedicoCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
+class LaboratoriosCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
 
     model = Laboratorios
     login_url = 'accounts:login'
     template_name = 'reservas/registro.html'
-    fields = ['nombre', 'capacidad', 'email', 'telefono', 'carreras']
+    fields = ['nombre', 'capacidad', 'email', 'telefono', 'carreras', 'hora_inicio', 'hora_fin']
     success_url = reverse_lazy('reservas:laboratorio_lista')
     
-class MedicoListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
+class LaboratoriosListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     
     login_url = 'accounts:login'
     template_name = 'reservas/laboratorios_lista.html'
@@ -34,7 +34,7 @@ class MedicoListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     def get_queryset(self):
         return Laboratorios.objects.all().order_by('-pk')
     
-class EspecialidadeCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
+class CarrerasCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
 
     model = Carreras
     login_url = 'accounts:login'
@@ -42,7 +42,7 @@ class EspecialidadeCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
     fields = ['nombre',]
     success_url = reverse_lazy('reservas:carreras_lista')
     
-class EspecialidadeListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
+class CarrerasListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     
     login_url = 'accounts:login'
     template_name = 'reservas/carreras_lista.html'
@@ -58,10 +58,16 @@ class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
     template_name = 'reservas/agenda_registro.html'
     fields = ['laboratorio', 'dia', 'horario']
     success_url = reverse_lazy('reservas:agenda_lista')
+  
     
+   
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+    
+
+  
+
     
 class AgendaUpdateView(LoginRequiredMixin, TestMixinIsAdmin, UpdateView):
 
@@ -74,6 +80,8 @@ class AgendaUpdateView(LoginRequiredMixin, TestMixinIsAdmin, UpdateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+    
+   
     
 class AgendaDeleteView(LoginRequiredMixin, TestMixinIsAdmin, DeleteView):
     model = Agenda
@@ -93,10 +101,13 @@ class AgendaListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     def get_queryset(self):
         return Agenda.objects.filter().order_by('-pk')
     
-laboratorio_registro = MedicoCreateView.as_view()
-laboratorio_lista = MedicoListView.as_view()
-carreras_registro = EspecialidadeCreateView.as_view()
-carreras_lista = EspecialidadeListView.as_view()
+
+
+    
+laboratorio_registro = LaboratoriosCreateView.as_view()
+laboratorio_lista = LaboratoriosListView.as_view()
+carreras_registro = CarrerasCreateView.as_view()
+carreras_lista = CarrerasListView.as_view()
 agenda_registro = AgendaCreateView.as_view()
 agenda_actualizar = AgendaUpdateView.as_view()
 agenda_lista = AgendaListView.as_view()

@@ -7,7 +7,7 @@ class EspecialidadeAdmin(admin.ModelAdmin):
     
 class MedicoAdmin(admin.ModelAdmin):
     list_display = [
-        'nombre', 'capacidad', 'telefono',
+        'nombre', 'capacidad', 'telefono', 'hora_inicio', 'hora_fin'
     ]
     
 class AgendaAdmin(admin.ModelAdmin):

@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.db.models.fields.related import ForeignKey
+from datetime import time
 
 class Carreras(models.Model):
     nombre = models.CharField(verbose_name="Nombre", max_length=200)
@@ -26,6 +27,9 @@ class Laboratorios(models.Model):
     carreras = ForeignKey(Carreras,
                                on_delete=models.CASCADE,
                                related_name='reservas')
+    hora_inicio = models.TimeField(verbose_name="Hora de inicio", default=time(7, 30))
+    hora_fin = models.TimeField(verbose_name="Hora de fin", default=time(17, 30))
+
     
     def __str__(self):
         return f'{self.nombre}'
@@ -43,12 +47,16 @@ class Agenda(models.Model):
     laboratorio = ForeignKey(Laboratorios, on_delete=models.CASCADE, related_name='agenda')
     dia = models.DateField(help_text="Ingrese una fecha para la agenda", validators=[validar_dia])
     
+    
     HORARIOS = (
-        ("1", "07:00 a 08:00"),
-        ("2", "08:00 a 09:00"),
-        ("3", "09:00 a 10:00"),
-        ("4", "10:00 a 11:00"),
-        ("5", "11:00 a 12:00"),
+        ("1", "07:30 a 08:30"),
+        ("2", "08:30 a 09:30"),
+        ("3", "09:30 a 10:30"),
+        ("4", "10:30 a 11:30"),
+        ("5", "11:30 a 12:30"),
+        ("6", "13:30 a 14:30"),
+        ("7", "15:30 a 16:30"),
+        ("8", "16:30 a 17:30"),
     )
     horario = models.CharField(max_length=10, choices=HORARIOS)
     
@@ -57,8 +65,11 @@ class Agenda(models.Model):
         verbose_name='Usuario', 
         on_delete=models.CASCADE
     )
+    
     class Meta:
         unique_together = ('horario', 'dia')
         
     def __str__(self):
         return f'{self.dia.strftime("%b %d %Y")} - {self.get_horario_display()} - {self.laboratorio}'
+    
+    

@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+
+
 app_name = 'reservas'
 
 urlpatterns = [
@@ -11,6 +13,7 @@ urlpatterns = [
     path('agendar/eliminar/<int:pk>/', views.agenda_eliminar, name='agendar_reserva_eliminar'),
     path('mis/consultas/', views.agenda_lista, name="agenda_lista"),
     path('admim/lista/reserva/', views.laboratorio_lista, name="laboratorio_lista"),
-    path('admim/lista/carreras/', views.carreras_lista, name="carreras_lista")
+    path('admim/lista/carreras/', views.carreras_lista, name="carreras_lista"),
     
+      
 ]
