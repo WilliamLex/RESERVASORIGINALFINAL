@@ -53,6 +53,13 @@ class CarrerasListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     def get_queryset(self):
         return Carreras.objects.all().order_by('-pk')
 
+class ConsultarDisponibilidadCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
+    
+    # Logica para consultar los horarios disponibles del laboratorio
+    def consultar(self, laboratorio, fecha):
+        
+        return None
+
 
 class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
 
@@ -103,7 +110,8 @@ class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
         )
 
         context['laboratorios_disponibles'] = laboratorios_disponibles
-
+        context['dia'] = dia
+        context['horario'] = horario
         return context
     
 class AgendaUpdateView(LoginRequiredMixin, TestMixinIsAdmin, UpdateView):
@@ -140,13 +148,21 @@ class AgendaListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     
 def disponibilidad_laboratorios(request):
     dia = request.GET.get('dia', date.today())
-    horario = request.GET.get('horario', '1')
+    horario_str= request.GET.get('horario', '1')
 
     try:
         dia_seleccionado = datetime.strptime(dia, '%Y-%m-%d')
     except ValueError:
         messages.error(request, "El formato de fecha es incorrecto.")
         return redirect("reservas:disponibilidad_laboratorios")
+    
+    try:
+        # Convertir horario a un entero
+        horario = int(horario_str)
+    except ValueError:
+        messages.error(request, "El valor del horario debe ser un número entero.")
+        return redirect("reservas:disponibilidad_laboratorios")
+
 
     laboratorios_disponibles = Laboratorios.objects.exclude(
         agenda__dia=dia_seleccionado.date(),
@@ -169,7 +185,10 @@ laboratorio_lista = LaboratoriosListView.as_view()
 carreras_registro = CarrerasCreateView.as_view()
 carreras_lista = CarrerasListView.as_view()
 agenda_registro = AgendaCreateView.as_view()
+consultar_disponibilidad = ConsultarDisponibilidadCreateView.as_view()
 agenda_actualizar = AgendaUpdateView.as_view()
 agenda_lista = AgendaListView.as_view()
 agenda_eliminar = AgendaDeleteView.as_view()
+disponibilidad_laboratorios = disponibilidad_laboratorios
+
 

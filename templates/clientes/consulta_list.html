@@ -53,6 +53,8 @@
                 <a href="{% url 'reservas:agendar_reserva_eliminar' consulta.id %}" class="mr-1 text-danger" style="padding-left: 10px; text-decoration: none;">
                     <i class="fas fa-trash-alt"></i>
                 </a>
+                <a href="{% url 'reservas:disponibilidad_laboratorios' %}?dia={{ consulta.dia|date:"Y-m-d" }}&horario={{ consulta.horario }}">Ver disponibilidad</a>
+
             </td>
         </tr>
         {% endfor %}

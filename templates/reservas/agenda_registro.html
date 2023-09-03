@@ -39,7 +39,7 @@
                   <label for="{{ form.dia.auto_ud }}" class="col-md-3 control-label">
                   {{ form.dia.label }}</label>
                   <div class="col-md-9">
-                    {% render_field form.dia type="date" class="form-control" placeholder="12/08/2023" %}
+                    {% render_field form.dia type="date" class="form-control" id="fecha" placeholder="12/08/2023" %}
                     {% for error in form.dia.errors %}
                     <span class="help-block">{{ error }}</span>
                     {% endfor %}
@@ -65,4 +65,65 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+// Función para establecer una cookie, que será necesario para las solicitudes Ajax con Django
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+ $(document).ready(function() {
+    // Selecciona el elemento de fecha por su ID
+    var fechaElemento = $("#fecha");
+
+    // Agrega un controlador de eventos onchange
+    fechaElemento.on("change", function() {
+      // El código que deseas ejecutar cuando cambie la fecha va aquí
+      var nuevaFecha = fechaElemento.val();
+      
+      // Obtiene una cookie csrftoken
+      var csrftoken = getCookie('csrftoken');
+      console.log("laboratorio: "+ $("#laboratorio").val())
+      console.log("Fecha seleccionada:", nuevaFecha);
+
+      $.ajax({
+          url: '/consultar-disponibilidad/',
+          type: 'POST',
+          data: {
+              "laboratorio": $("#laboratorio").val(),
+              "fecha": nuevaFecha,
+              csrfmiddlewaretoken: csrftoken
+          },
+          dataType: 'json'
+      }).done(function (data) {
+         // Respuesta exitosa
+
+         // Rellener select de horarios con la informacion que proveien en la variable "data"
+
+
+
+      }).fail(function (jqXHR, textStatus, errorThrown) {
+        // Respuesta de error en el servidor
+      }).always(function (data) {
+        // Respuesta de error en frontend
+      });
+
+
+    });
+  });
+</script>
 {% endblock %}
