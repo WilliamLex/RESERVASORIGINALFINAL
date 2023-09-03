@@ -24,7 +24,11 @@
                   <label for="{{ form.laboratorio.auto_id }}" class="col-md-3 control-label">
                   {{ form.laboratorio.label }}</label>
                   <div class="col-md-9">
-                    {% render_field form.laboratorio class="form-control" %}
+                    <select name="laboratorio" id="laboratorio" class="form-control">
+                        {% for lab in laboratorios_disponibles %}
+                            <option value="{{ lab.id }}">{{ lab.nombre }}</option>
+                        {% endfor %}
+                    </select>
 
                     {% for error in form.laboratorio.errors %}
                     <span class="help-block">{{ error }}</span>

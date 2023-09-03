@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Disponibilidad de Laboratorios | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  <h2>Disponibilidad de Laboratorios</h2>
+  <p>Fecha seleccionada: {{ dia }}</p>
+  <p>Horario seleccionado: {{ horario }}</p>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nombre del Laboratorio</th>
+        <th>Capacidad</th>
+        <th>Disponibilidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for laboratorio in laboratorios %}
+        <tr>
+          <td>{{ laboratorio.nombre }}</td>
+          <td>{{ laboratorio.capacidad }}</td>
+          <td>
+            {% if laboratorio.esta_disponible dia horario %}
+              <span class="text-success">Disponible</span>
+            {% else %}
+              <span class="text-danger">No Disponible</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

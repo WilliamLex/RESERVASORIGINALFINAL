@@ -30,6 +30,14 @@ class Laboratorios(models.Model):
     hora_inicio = models.TimeField(verbose_name="Hora de inicio", default=time(7, 30))
     hora_fin = models.TimeField(verbose_name="Hora de fin", default=time(17, 30))
 
+    def esta_disponible(self, dia, horario):
+        """
+        Verifica si el laboratorio está disponible en un día y horario específicos.
+        """
+        reservas = Agenda.objects.filter(laboratorio=self, dia=dia, horario=horario)
+        return not reservas.exists()  # Retorna True si no hay reservas, lo que indica disponibilidad
+
+
     
     def __str__(self):
         return f'{self.nombre}'
@@ -58,18 +66,24 @@ class Agenda(models.Model):
         ("7", "15:30 a 16:30"),
         ("8", "16:30 a 17:30"),
     )
-    horario = models.CharField(max_length=10, choices=HORARIOS)
-    
+    horario = models.CharField(
+        max_length=2,
+        choices=HORARIOS
+    )
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         verbose_name='Usuario', 
         on_delete=models.CASCADE
     )
-    
+
+    reservado = models.BooleanField(
+        default=False,
+        verbose_name='Reservado'
+    )
+
     class Meta:
-        unique_together = ('horario', 'dia')
-        
+         ordering = ['-pk']
+         
     def __str__(self):
         return f'{self.dia.strftime("%b %d %Y")} - {self.get_horario_display()} - {self.laboratorio}'
-    
-    

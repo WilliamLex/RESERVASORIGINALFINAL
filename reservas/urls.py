@@ -14,6 +14,7 @@ urlpatterns = [
     path('mis/consultas/', views.agenda_lista, name="agenda_lista"),
     path('admim/lista/reserva/', views.laboratorio_lista, name="laboratorio_lista"),
     path('admim/lista/carreras/', views.carreras_lista, name="carreras_lista"),
+    path('disponibilidad-laboratorios/', views.disponibilidad_laboratorios, name='disponibilidad_laboratorios'),
     
       
 ]

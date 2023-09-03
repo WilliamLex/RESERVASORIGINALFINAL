@@ -30,7 +30,7 @@
         {% for consulta in object_list %}
         <tr>
             <td>
-                <a href=""># {{ consulta.pk }}</a>
+                <a href="#"># {{ consulta.pk }}</a>
             </td>
             <td>
                 {{ consulta.laboratorio }}
@@ -41,6 +41,7 @@
             <td>
                 {{ consulta.get_horario_display }}
             </td>
+            
             <td>
                 <a href="{% url 'reservas:agendar_reserva_actualizar' consulta.id %}" class="text-primary" style="padding-left: 10px; text-decoration: none;">
                     <i class="fas fa-edit"></i>
@@ -48,6 +49,9 @@
                 <a href="{% url 'reservas:agendar_reserva_eliminar' consulta.id %}" class="mr-1 text-danger" style="padding-left: 10px; text-decoration: none;">
                     <i class="fas fa-trash-alt"></i>
                 </a>
+                <a href="{% url 'reservas:disponibilidad_laboratorios' %}?dia={{ consulta.dia|date:"Y-m-d" }}&horario={{ consulta.horario }}">Ver disponibilidad</a>
+
+
             </td>
         </tr>
         {% endfor %}

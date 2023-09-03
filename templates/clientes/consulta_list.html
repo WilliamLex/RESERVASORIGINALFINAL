@@ -42,6 +42,11 @@
                 {{ consulta.agenda.get_horario_display }}
             </td>
             <td>
+                {% if consulta.reservado %}
+                <span class="text-danger">Reservado</span>
+                {% else %}
+                <span class="text-success">Disponible</span>
+                {% endif %}
                 <a href="{% url 'reservas:agendar_reserva_actualizar' consulta.id %}" class="text-primary" style="padding-left: 10px; text-decoration: none;">
                     <i class="fas fa-edit"></i>
                 </a>

@@ -1,6 +1,9 @@
+import re  
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
+from datetime import date
+from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Laboratorios, Agenda, Carreras
@@ -61,13 +64,47 @@ class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
   
     
    
+    
+    
     def form_valid(self, form):
+        # Verificar si ya existe una reserva para la misma fecha y hora en el mismo laboratorio
+        existing_reserva = Agenda.objects.filter(
+            laboratorio=form.cleaned_data['laboratorio'],
+            dia=form.cleaned_data['dia'],
+            horario=form.cleaned_data['horario']
+        ).exists()
+        
+        if existing_reserva:
+            messages.error(self.request, "Ya existe una reserva para esta fecha y hora en este laboratorio.")
+            return redirect("reservas:agenda_lista")
+
         form.instance.user = self.request.user
         return super().form_valid(form)
-    
-
   
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Obtener la lista de laboratorios disponibles y agregarla al contexto
+        dia = self.request.GET.get('dia', date.today())
+        horario = self.request.GET.get('horario', '1')
 
+        try:
+            # Formatear dia como una cadena de texto en el formato deseado
+            dia_str = dia.strftime('%Y-%m-%d')
+            dia_seleccionado = datetime.strptime(dia_str, '%Y-%m-%d')
+        except ValueError:
+            messages.error(self.request, "El formato de fecha es incorrecto.")
+            return redirect("reservas:disponibilidad_laboratorios")
+
+        laboratorios_disponibles = Laboratorios.objects.exclude(
+            agenda__dia=dia_seleccionado.date(),
+            agenda__horario=horario,
+            agenda__reservado=True
+        )
+
+        context['laboratorios_disponibles'] = laboratorios_disponibles
+
+        return context
     
 class AgendaUpdateView(LoginRequiredMixin, TestMixinIsAdmin, UpdateView):
 
@@ -101,6 +138,29 @@ class AgendaListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
     def get_queryset(self):
         return Agenda.objects.filter().order_by('-pk')
     
+def disponibilidad_laboratorios(request):
+    dia = request.GET.get('dia', date.today())
+    horario = request.GET.get('horario', '1')
+
+    try:
+        dia_seleccionado = datetime.strptime(dia, '%Y-%m-%d')
+    except ValueError:
+        messages.error(request, "El formato de fecha es incorrecto.")
+        return redirect("reservas:disponibilidad_laboratorios")
+
+    laboratorios_disponibles = Laboratorios.objects.exclude(
+        agenda__dia=dia_seleccionado.date(),
+        agenda__horario=horario,
+        agenda__reservado=True
+    )
+
+    context = {
+        'laboratorios_disponibles': laboratorios_disponibles,
+        'dia': dia,
+        'horario': horario,
+    }
+
+    return render(request, 'disponibilidad_laboratorios.html', context)
 
 
     
