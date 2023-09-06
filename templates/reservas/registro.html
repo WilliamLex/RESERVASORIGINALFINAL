@@ -7,38 +7,69 @@
 {% endblock %}
 
 {% block container %}
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <div class="page-header">
-            <h1>Registro</h1>
-        </div>
-        <form class="form-horizontal" method="post">
-            {% csrf_token %}
-            {% for error in form.non_field_errors %}
-            <div class="alert alert-danger">
-                {{ error }}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="page-header">
+                <h1>Registro</h1>
             </div>
-            {% endfor %}
-            <fieldset>
-                {% for field in form %}
-                <div class="form-group{% if field.errors %} has-error{% endif %}">
-                  <label for="{{ field.auto_id }}" class="col-md-3 control-label">
-                  {{ field.label }}</label>
-                  <div class="col-md-9">
-                    {% render_field field class="form-control" %}
-                    {% for error in field.errors %}
-                    <span class="help-block">{{ error }}</span>
-                    {% endfor %}
-                  </div>
+            <form class="form-horizontal" method="post">
+                {% csrf_token %}
+                {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ error }}
                 </div>
                 {% endfor %}
-                <div class="form-group">
-                  <div class="col-md-9 col-md-offset-3">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                  </div>
-                </div>
-            </fieldset>
-        </form>
+                <fieldset>
+                    {% for field in form %}
+                    <div class="form-group{% if field.errors %} has-error{% endif %}">
+                      <label for="{{ field.auto_id }}" class="col-md-3 control-label">
+                      {{ field.label }}</label>
+                      <div class="col-md-9">
+                        {% render_field field class="form-control" %}
+                        {% for error in field.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    {% endfor %}
+                    <div class="form-group">
+                      <div class="col-md-9 col-md-offset-3">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                      </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
     </div>
 </div>
+
+<style>
+  /* Estilos personalizados aquí */
+  .page-header {
+      background-color: #64676a;
+      color: #fff;
+      padding: 20px;
+  }
+
+  .form-horizontal .form-group label {
+      font-weight: bold;
+  }
+
+  .help-block {
+      color: #dc3545;
+  }
+
+  /* Cambiar el color de fondo del botón */
+  .btn-primary {
+      background-color: #676c70e9;
+      border-color: #9ba0a5;
+  }
+
+  /* Cambiar el color de fondo del botón al pasar el mouse */
+  .btn-primary:hover {
+      background-color: #8b8e91;
+      border-color: #9ba0a5;
+  }
+</style>
 {% endblock %}

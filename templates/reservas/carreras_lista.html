@@ -5,29 +5,60 @@
 {% endblock %}
 
 {% block accounts_container %}
-<h2>Carreras</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Nombre
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for carreras in object_list %}
-        <tr>
-            <td>
-                <a href=""># {{ carreras.pk }}</a>
-            </td>
-            <td>
-                {{ carreras.nombre }}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container">
+    <h2 class="mt-4">Carreras</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for carrera in object_list %}
+                    <tr>
+                        <td>
+                            <a href="#"># {{ carrera.pk }}</a>
+                        </td>
+                        <td>
+                            {{ carrera.nombre }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    /* Estilos personalizados aquí */
+    .mt-4 {
+        margin-top: 1.5rem !important;
+    }
+
+    /* Personalizar el color de fondo de la tabla */
+    .table {
+        background-color: #f8f9fa;
+    }
+
+    /* Personalizar el color del encabezado de la tabla */
+    .table thead {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    /* Personalizar el color del enlace en la columna ID */
+    .table tbody a {
+        color: #007bff;
+        text-decoration: none;
+        padding-left: 10px;
+    }
+
+    /* Personalizar el color del enlace al pasar el mouse */
+    .table tbody a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+</style>
 {% endblock %}

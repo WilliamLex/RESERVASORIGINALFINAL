@@ -2,6 +2,7 @@ import re
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect, JsonResponse
 from datetime import date
 from datetime import datetime
 from django.contrib import messages
@@ -58,7 +59,29 @@ class ConsultarDisponibilidadCreateView(LoginRequiredMixin, TestMixinIsAdmin, Cr
     # Logica para consultar los horarios disponibles del laboratorio
     def consultar(self, laboratorio, fecha):
         
-        return None
+        try:
+            # Busca el laboratorio por nombre
+            laboratorio_obj = Laboratorios.objects.get(nombre=laboratorio)
+
+            # Realiza la consulta para obtener los horarios disponibles
+            horarios_disponibles = Agenda.objects.filter(
+                laboratorio=laboratorio_obj,
+                fecha=fecha,
+                asignado=False  # Filtra los horarios que no están asignados
+            ).values('id', 'hora')  # Filtra los campos que deseas incluir en la respuesta
+
+            # Convierte los horarios disponibles en una lista de diccionarios
+            horarios_response = list(horarios_disponibles)
+
+            # Retorna los horarios disponibles en formato JSON
+            return JsonResponse({"horarios_disponibles": horarios_response})
+
+        except Laboratorios.DoesNotExist:
+            return JsonResponse({"error": "El laboratorio no existe"}, status=400)
+
+        except Exception as e:
+            # Maneja cualquier excepción que pueda ocurrir durante la consulta
+            return JsonResponse({"error": str(e)}, status=500)
 
 
 class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
@@ -83,7 +106,8 @@ class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
         
         if existing_reserva:
             messages.error(self.request, "Ya existe una reserva para esta fecha y hora en este laboratorio.")
-            return redirect("reservas:agenda_lista")
+            return HttpResponseRedirect(reverse_lazy("reservas:agenda_lista"))
+          
 
         form.instance.user = self.request.user
         return super().form_valid(form)

@@ -1,33 +1,48 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block title %}
-    Mi Cuenta  | {{ block.super }}
-{% endblock%}
+    Mi Cuenta | {{ block.super }}
+{% endblock %}
 
 {% block container %}
-     <ol class="breadcrumb">
-          <li><a href="{% url 'accounts:index'%}">Início</a></li>
-          <li class="active">Mi Cuenta</li>
-        </ol>
+    <div class="container mt-5">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="list-group">
-                  <a href="#" class="list-group-item active">Mi Cuenta</a>
-                  <a href="{% url 'accounts:update_user'%}" class="list-group-item">Cambiar Nombre y Correo Electrónico</a>
-                  <a href="{% url 'accounts:update_password'%}" class="list-group-item">Cambiar Contraseña</a>
-                  <a href="{% url 'clientes:cliente_actualizar'%}" class="list-group-item"> Detalles de Reserva de Laboratorio </a>
-                  <a href="{% url 'clientes:consulta_list'%}" class="list-group-item">Mis reservas</a>
-                  {% if request.user.is_staff or request.user.is_superuser %}
-                  <a href="{% url 'reservas:agenda_lista'%}" class="list-group-item">Agendas</a>
-                  <a href="{% url 'reservas:laboratorio_lista'%}" class="list-group-item">Laboratorios</a>
-                  <a href="{% url 'reservas:carreras_lista'%}" class="list-group-item">Carreras</a>
-                  {% endif %}
+                    <a href="#" class="list-group-item active">
+                        Mi Cuenta
+                    </a>
+                    <a href="{% url 'accounts:update_user' %}" class="list-group-item">
+                        <i class="fas fa-user mr-2"></i> Cambiar Nombre y Correo Electrónico
+                    </a>
+                    <a href="{% url 'accounts:update_password' %}" class="list-group-item">
+                        <i class="fas fa-key mr-2"></i> Cambiar Contraseña
+                    </a>
+                    <a href="{% url 'clientes:cliente_actualizar' %}" class="list-group-item">
+                        <i class="fas fa-laptop mr-2"></i> Detalles de Reserva de Laboratorio
+                    </a>
+                    <a href="{% url 'clientes:consulta_list' %}" class="list-group-item">
+                        <i class="fas fa-list mr-2"></i> Mis reservas
+                    </a>
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                    <a href="{% url 'reservas:agenda_lista' %}" class="list-group-item">
+                        <i class="fas fa-clock mr-2"></i> Agendas
+                    </a>
+                    <a href="{% url 'reservas:laboratorio_lista' %}" class="list-group-item">
+                        <i class="fas fa-desktop mr-2"></i> Laboratorios
+                    </a>
+                    <a href="{% url 'reservas:carreras_lista' %}" class="list-group-item">
+                        <i class="fas fa-graduation-cap mr-2"></i> Carreras
+                    </a>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-md-8">
-            {% block accounts_container %}
-                <h2>Bienvenido {{ user.name }} </h2>
-            {% endblock  %}
-                
+            <div class="col-md-9">
+                <div class="card" style="background-color: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <h2 class="mb-4">Bienvenido {{ user.name }}</h2>
+                    {% block accounts_container %}{% endblock %}
+                </div>
             </div>
-{% endblock  %}
+        </div>
+    </div>
+{% endblock %}

@@ -25,29 +25,29 @@
     <div class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">
         <li>
-          <a href="{% url 'clientes:consulta_create' %}">Reservas de Laboratorio</a>
+          <a href="{% url 'clientes:consulta_create' %}"><i class="fas fa-laptop"></i> Reservas de Laboratorio</a>
         </li>
         {% if user.is_staff or user.is_superuser %}
         <li>
-          <a href="{% url 'reservas:agendar_reserva' %}">Reservar Horario</a>
+          <a href="{% url 'reservas:agendar_reserva' %}"><i class="fas fa-clock"></i> Reservar Horario</a>
         </li>
         <li>
-          <a href="{% url 'reservas:laboratorio_registro' %}">Laboratorios</a>
+          <a href="{% url 'reservas:laboratorio_registro' %}"><i class="fas fa-desktop"></i> Laboratorios</a>
         </li>    
         <li>
-          <a href="{% url 'reservas:carreras_registro' %}">Carreras</a>
+          <a href="{% url 'reservas:carreras_registro' %}"><i class="fas fa-graduation-cap"></i> Carreras</a>
         </li>
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-          <li><a href="{% url 'accounts:index' %}">Mi Cuenta</a></li>
-          <li><a href="{% url 'accounts:logout' %}">Salir</a></li>
+          <li><a href="{% url 'accounts:index' %}"><i class="fas fa-user"></i> Mi Cuenta</a></li>
+          <li><a href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
         {% else %}
-          <li><a href="{% url 'accounts:login' %}">Ingresar</a></li>
-          <li><a href="{% url 'accounts:register' %}">Registro</a></li>
+          <li><a href="{% url 'accounts:login' %}"><i class="fas fa-sign-in-alt"></i> Ingresar</a></li>
+          <li><a href="{% url 'accounts:register' %}"><i class="fas fa-user-plus"></i> Registro</a></li>
         {% endif %}
-      </ul>
+    </ul>
     </div>
   </div>
   <div class="container margin-top">

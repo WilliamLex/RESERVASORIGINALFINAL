@@ -5,56 +5,81 @@
 {% endblock %}
 
 {% block accounts_container %}
-<h2>Horarios Disponibles de Laboratorio</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Laboratorios
-            </th>
-            <th>
-                Dia
-            </th>
-            <th>
-                Horario
-            </th>
-            <th>
-                Opciones
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for consulta in object_list %}
-        <tr>
-            <td>
-                <a href="#"># {{ consulta.pk }}</a>
-            </td>
-            <td>
-                {{ consulta.laboratorio }}
-            </td>
-            <td>
-                {{ consulta.dia|date:"d/m/Y" }}
-            </td>
-            <td>
-                {{ consulta.get_horario_display }}
-            </td>
-            
-            <td>
-                <a href="{% url 'reservas:agendar_reserva_actualizar' consulta.id %}" class="text-primary" style="padding-left: 10px; text-decoration: none;">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <a href="{% url 'reservas:agendar_reserva_eliminar' consulta.id %}" class="mr-1 text-danger" style="padding-left: 10px; text-decoration: none;">
-                    <i class="fas fa-trash-alt"></i>
-                </a>
-                <a href="{% url 'reservas:disponibilidad_laboratorios' %}?dia={{ consulta.dia|date:"Y-m-d" }}&horario={{ consulta.horario }}">Ver disponibilidad</a>
+    <div class="container">
+        <h2 class="mt-4">Horarios Disponibles de Laboratorio</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered mt-4">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Laboratorios</th>
+                        <th>Dia</th>
+                        <th>Horario</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consulta in object_list %}
+                        <tr>
+                            <td>
+                                <a href="#"># {{ consulta.pk }}</a>
+                            </td>
+                            <td>{{ consulta.laboratorio }}</td>
+                            <td>{{ consulta.dia|date:"d/m/Y" }}</td>
+                            <td>{{ consulta.get_horario_display }}</td>
+                            <td>
+                                <a href="{% url 'reservas:agendar_reserva_actualizar' consulta.id %}" class="text-primary" style="text-decoration: none;">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'reservas:agendar_reserva_eliminar' consulta.id %}" class="mr-1 text-danger" style="text-decoration: none;">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                                <a href="{% url 'reservas:disponibilidad_laboratorios' %}?dia={{ consulta.dia|date:"Y-m-d" }}&horario={{ consulta.horario }}" class="text-info" style="text-decoration: none;">
+                                    Ver disponibilidad
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
+    <style>
+        /* Estilos personalizados aquí */
+        .mt-4 {
+            margin-top: 1.5rem !important;
+        }
 
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        /* Personalizar el color de fondo de la tabla */
+        .table {
+            background-color: #f8f9fa;
+        }
+
+        /* Personalizar el color del encabezado de la tabla */
+        .table thead {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        /* Personalizar el color del enlace en la columna ID */
+        .table tbody a {
+            color: #007bff;
+            text-decoration: none;
+            padding-left: 10px;
+        }
+
+        /* Personalizar el color del enlace al pasar el mouse */
+        .table tbody a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Añadir un margen superior a las opciones */
+        .table tbody .text-primary,
+        .table tbody .text-danger,
+        .table tbody .text-info {
+            margin-top: 5px;
+        }
+    </style>
 {% endblock %}

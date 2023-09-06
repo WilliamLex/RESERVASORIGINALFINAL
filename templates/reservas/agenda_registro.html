@@ -36,8 +36,9 @@
                   </div>
                 </div>
                 <div class="form-group{% if form.dia.errors %} has-error{% endif %}">
-                  <label for="{{ form.dia.auto_ud }}" class="col-md-3 control-label">
-                  {{ form.dia.label }}</label>
+                  <label for="{{ form.dia.auto_id }}" class="col-md-3 control-label">
+                      {{ form.dia.label }}
+                  </label>
                   <div class="col-md-9">
                     {% render_field form.dia type="date" class="form-control" id="fecha" placeholder="12/08/2023" %}
                     {% for error in form.dia.errors %}
@@ -65,6 +66,35 @@
         </form>
     </div>
 </div>
+
+<style>
+  /* Estilos personalizados aquí */
+  .page-header {
+      background-color: #64676a;
+      color: #fff;
+      padding: 20px;
+  }
+
+  .form-horizontal .form-group label {
+      font-weight: bold;
+  }
+
+  .help-block {
+      color: #dc3545;
+  }
+
+  /* Cambiar el color de fondo del botón */
+  .btn-primary {
+      background-color: #676c70e9;
+      border-color: #9ba0a5;
+  }
+
+  /* Cambiar el color de fondo del botón al pasar el mouse */
+  .btn-primary:hover {
+      background-color: #8b8e91;
+      border-color: #9ba0a5;
+  }
+</style>
 {% endblock %}
 
 {% block scripts %}
@@ -111,19 +141,30 @@ function getCookie(name) {
           dataType: 'json'
       }).done(function (data) {
          // Respuesta exitosa
+         console.log(JSON.stringify(data, null, 2));
 
-         // Rellener select de horarios con la informacion que proveien en la variable "data"
+// Rellener select de horarios con la información que proviene en la variable "data"
+var selectHorarios = $("#select-horarios");
+selectHorarios.empty(); // Limpiar opciones anteriores
 
+data.horarios_disponibles.forEach(function (horario) {
+    // Crear una opción para cada horario disponible
+    var opcion = $("<option>");
+    opcion.val(horario.id);
+    opcion.text(horario.hora);
+    selectHorarios.append(opcion);
+});
 
-
-      }).fail(function (jqXHR, textStatus, errorThrown) {
-        // Respuesta de error en el servidor
-      }).always(function (data) {
-        // Respuesta de error en frontend
-      });
-
-
-    });
-  });
+}).fail(function (jqXHR, textStatus, errorThrown) {
+// Respuesta de error en el servidor
+console.error("Error en el servidor:", errorThrown);
+alert("Hubo un error en el servidor. Por favor, inténtalo nuevamente más tarde o contacta al soporte técnico.");
+}).always(function (data) {
+// Respuesta de error en el frontend
+console.error("Error en el frontend:", data);
+alert("Hubo un error en la aplicación. Por favor, inténtalo nuevamente o contacta al soporte técnico.");
+});
+});
+});
 </script>
 {% endblock %}

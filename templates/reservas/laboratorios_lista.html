@@ -5,65 +5,69 @@
 {% endblock %}
 
 {% block accounts_container %}
-<h2>Laboratorios Disponibles</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Nombre
-            </th>
-            <th>
-                Correo
-            </th>
-            <th>
-                Capacidad 
-            </th>
-            <th>
-                Carreras
-            </th>
-            <th>
-                Telefono
-            </th>
-            <th>
-                Hora_Inicio
-            </th>
-            <th>
-                Hora_Fin
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for laboratorio in object_list %}
-        <tr>
-            <td>
-                <a href=""># {{ laboratorio.pk }}</a>
-            </td>
-            <td>
-                {{ laboratorio.nombre }}
-            </td>
-            <td>
-                {{ laboratorio.email }}
-            </td>
-            <td>
-                {{ laboratorio.capacidad }}
-            </td>
-            <td>
-                {{ laboratorio.carreras }}
-            </td>
-            <td>
-                {{ laboratorio.telefono }}
-            </td>
-            <td>
-                {{ laboratorio.hora_inicio }}
-            </td>
-            <td>
-                {{ laboratorio.hora_fin }}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="container">
+        <h2 class="mt-4">Laboratorios Disponibles</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered mt-4">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Capacidad</th>
+                        <th>Carreras</th>
+                        <th>Teléfono</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Fin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for laboratorio in object_list %}
+                        <tr>
+                            <td>
+                                <a href="#"># {{ laboratorio.pk }}</a>
+                            </td>
+                            <td>{{ laboratorio.nombre }}</td>
+                            <td>{{ laboratorio.email }}</td>
+                            <td>{{ laboratorio.capacidad }}</td>
+                            <td>{{ laboratorio.carreras }}</td>
+                            <td>{{ laboratorio.telefono }}</td>
+                            <td>{{ laboratorio.hora_inicio }}</td>
+                            <td>{{ laboratorio.hora_fin }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <style>
+        /* Estilos personalizados aquí */
+        .mt-4 {
+            margin-top: 1.5rem !important;
+        }
+
+        /* Personalizar el color de fondo de la tabla */
+        .table {
+            background-color: #f8f9fa;
+        }
+
+        /* Personalizar el color del encabezado de la tabla */
+        .table thead {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        /* Personalizar el color del enlace en la columna ID */
+        .table tbody a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Personalizar el color del enlace al pasar el mouse */
+        .table tbody a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+    </style>
 {% endblock %}

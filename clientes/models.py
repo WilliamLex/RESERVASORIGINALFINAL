@@ -5,6 +5,11 @@ from django.db import models
 from reservas.models import Agenda
 
 class Cliente(models.Model):
+    nombre_completo = models.CharField(
+        max_length=255,
+        verbose_name="Nombre Completo"
+    )
+    
     
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',
@@ -16,9 +21,7 @@ class Cliente(models.Model):
                                 max_length=17, null=True, blank=True)
     
     carrera = models.CharField(max_length=100)  # Cambiamos la longitud para permitir más caracteres
-    
-    def __str__(self):
-        return f"{self.carrera}"
+   
     
     
     user = models.OneToOneField(
@@ -28,7 +31,7 @@ class Cliente(models.Model):
     )
     
     def __str__(self):
-        return f'{self.user.name}'
+        return f"Nombre Completo: {self.nombre_completo}, Carrera: {self.carrera}, Usuario: {self.user.name}"
     
 class Consulta(models.Model):
     agenda =  OneToOneField(Agenda, on_delete=models.CASCADE, related_name='consulta')
