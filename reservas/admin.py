@@ -2,10 +2,10 @@ from django.contrib import admin
 
 from reservas.models import Carreras, Laboratorios, Agenda
 
-class EspecialidadeAdmin(admin.ModelAdmin):
+class CarrerasAdmin(admin.ModelAdmin):
     list_display = ['nombre']
     
-class MedicoAdmin(admin.ModelAdmin):
+class LaboratoriosAdmin(admin.ModelAdmin):
     list_display = [
         'nombre', 'capacidad', 'telefono', 'hora_inicio', 'hora_fin'
     ]
@@ -24,6 +24,6 @@ class AgendaAdmin(admin.ModelAdmin):
         
         return ', '.join(laboratorios_disponibles) if laboratorios_disponibles else 'Ninguno'
     
-admin.site.register(Carreras, EspecialidadeAdmin)
-admin.site.register(Laboratorios, MedicoAdmin)
+admin.site.register(Carreras, CarrerasAdmin)
+admin.site.register(Laboratorios, LaboratoriosAdmin)
 admin.site.register(Agenda, AgendaAdmin)

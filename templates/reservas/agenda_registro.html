@@ -141,30 +141,30 @@ function getCookie(name) {
           dataType: 'json'
       }).done(function (data) {
          // Respuesta exitosa
-         console.log(JSON.stringify(data, null, 2));
+          console.log(JSON.stringify(data, null, 2));
 
-// Rellener select de horarios con la información que proviene en la variable "data"
-var selectHorarios = $("#select-horarios");
-selectHorarios.empty(); // Limpiar opciones anteriores
+          // Rellener select de horarios con la información que proviene en la variable "data"
+          var selectHorarios = $("#select-horarios");
+          selectHorarios.empty(); // Limpiar opciones anteriores
 
-data.horarios_disponibles.forEach(function (horario) {
-    // Crear una opción para cada horario disponible
-    var opcion = $("<option>");
-    opcion.val(horario.id);
-    opcion.text(horario.hora);
-    selectHorarios.append(opcion);
-});
+          data.horarios_disponibles.forEach(function (horario) {
+              // Crear una opción para cada horario disponible
+              var opcion = $("<option>");
+              opcion.val(horario.id);
+              opcion.text(horario.hora);
+              selectHorarios.append(opcion);
+          });
 
-}).fail(function (jqXHR, textStatus, errorThrown) {
-// Respuesta de error en el servidor
-console.error("Error en el servidor:", errorThrown);
-alert("Hubo un error en el servidor. Por favor, inténtalo nuevamente más tarde o contacta al soporte técnico.");
-}).always(function (data) {
-// Respuesta de error en el frontend
-console.error("Error en el frontend:", data);
-alert("Hubo un error en la aplicación. Por favor, inténtalo nuevamente o contacta al soporte técnico.");
-});
-});
-});
-</script>
+      }).fail(function (jqXHR, textStatus, errorThrown) {
+          // Respuesta de error en el servidor
+          console.error("Error en el servidor:", errorThrown);
+          alert("Hubo un error en el servidor. Por favor, inténtalo nuevamente más tarde o contacta al soporte técnico.");
+      }).always(function (data) {
+          // Respuesta de error en el frontend
+          console.error("Error en el frontend:", data);
+          alert("Hubo un error en la aplicación. Por favor, inténtalo nuevamente o contacta al soporte técnico.");
+      });
+    });
+ });
+        </script>
 {% endblock %}
