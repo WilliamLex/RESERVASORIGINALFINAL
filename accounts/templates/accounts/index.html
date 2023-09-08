@@ -5,44 +5,137 @@
 {% endblock %}
 
 {% block container %}
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="list-group">
-                    <a href="#" class="list-group-item active">
-                        Mi Cuenta
-                    </a>
-                    <a href="{% url 'accounts:update_user' %}" class="list-group-item">
-                        <i class="fas fa-user mr-2"></i> Cambiar Nombre y Correo Electrónico
-                    </a>
-                    <a href="{% url 'accounts:update_password' %}" class="list-group-item">
-                        <i class="fas fa-key mr-2"></i> Cambiar Contraseña
-                    </a>
-                    <a href="{% url 'clientes:cliente_actualizar' %}" class="list-group-item">
-                        <i class="fas fa-laptop mr-2"></i> Detalles de Reserva de Laboratorio
-                    </a>
-                    <a href="{% url 'clientes:consulta_list' %}" class="list-group-item">
-                        <i class="fas fa-list mr-2"></i> Mis reservas
-                    </a>
-                    {% if request.user.is_staff or request.user.is_superuser %}
-                    <a href="{% url 'reservas:agenda_lista' %}" class="list-group-item">
-                        <i class="fas fa-clock mr-2"></i> Agendas
-                    </a>
-                    <a href="{% url 'reservas:laboratorio_lista' %}" class="list-group-item">
-                        <i class="fas fa-desktop mr-2"></i> Laboratorios
-                    </a>
-                    <a href="{% url 'reservas:carreras_lista' %}" class="list-group-item">
-                        <i class="fas fa-graduation-cap mr-2"></i> Carreras
-                    </a>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-md-9">
-                <div class="card" style="background-color: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <h2 class="mb-4">Bienvenido {{ user.name }}</h2>
-                    {% block accounts_container %}{% endblock %}
-                </div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Barra lateral izquierda -->
+            <div class="list-group">
+                <a href="#" class="list-group-item active">
+                    <i class="fas fa-user mr-2"></i> Mi Cuenta
+                </a>
+                <a href="{% url 'accounts:update_user' %}" class="list-group-item">
+                    <i class="fas fa-edit mr-2"></i> Cambiar Nombre y Correo Electrónico
+                </a>
+                <a href="{% url 'accounts:update_password' %}" class="list-group-item">
+                    <i class="fas fa-lock mr-2"></i> Cambiar Contraseña
+                </a>
+                <a href="{% url 'clientes:cliente_actualizar' %}" class="list-group-item">
+                    <i class="fas fa-laptop mr-2"></i> Detalles de Reserva de Laboratorio
+                </a>
+                <a href="{% url 'clientes:consulta_list' %}" class="list-group-item">
+                    <i class="fas fa-list-alt mr-2"></i> Mis reservas
+                </a>
+                {% if request.user.is_staff or request.user.is_superuser %}
+                <a href="{% url 'reservas:agenda_lista' %}" class="list-group-item">
+                    <i class="fas fa-calendar-alt mr-2"></i> Agendas
+                </a>
+                <a href="{% url 'reservas:laboratorio_lista' %}" class="list-group-item">
+                    <i class="fas fa-desktop mr-2"></i> Laboratorios
+                </a>
+                <a href="{% url 'reservas:carreras_lista' %}" class="list-group-item">
+                    <i class="fas fa-graduation-cap mr-2"></i> Carreras
+                </a>
+                {% endif %}
             </div>
         </div>
+        <div class="col-md-9">
+            <!-- Contenido principal -->
+          
+                <div class="card-body">
+                    <h2 class="card-title text-primary">¡Bienvenido, {{ user.name }}!</h2>
+                    {% block accounts_container %}{% endblock %}
+                </div>
+          
+        </div>
     </div>
+</div>
+<style>
+    body {
+        border: 8px solid #ddd;
+        background-color: #f8f9fa;
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+    }
+    .navbar {
+    background-color: rgba(52, 58, 64, 0.9); /* Fondo de la barra de navegación con opacidad */
+    }
+    .navbar-dark .navbar-toggler-icon {
+        background-color: #fff;
+    }
+    .navbar-brand {
+    color: #fff;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-size: 18px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #007bff;
+}
+
+.jumbotron {
+    background-color: #f5f5f5;
+    background-image: url('tu-imagen-de-fondo.jpg');
+    background-size: cover;
+    background-position: center center;
+    color: #030303;
+    text-align: center;
+    padding: 100px 0;
+    margin-top: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.jumbotron h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+}
+
+.jumbotron p {
+    font-size: 1.8rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    font-size: 12px;
+    padding: 12px 24px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.card {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 18px;
+}
+
+.footer {
+    border: 4px solid #ddd;
+    background-color: #f5f5f5;
+    color: #030303;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px;
+}
+</style>
 {% endblock %}
