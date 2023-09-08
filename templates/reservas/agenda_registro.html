@@ -122,6 +122,7 @@ function getCookie(name) {
 
     // Agrega un controlador de eventos onchange
     fechaElemento.on("change", function() {
+        
       // El código que deseas ejecutar cuando cambie la fecha va aquí
       var nuevaFecha = fechaElemento.val();
       
@@ -131,14 +132,15 @@ function getCookie(name) {
       console.log("Fecha seleccionada:", nuevaFecha);
 
       $.ajax({
-          url: '/consultar-disponibilidad/',
           type: 'POST',
+          url: 'http://127.0.0.1:8000/reservas/consultar-disponibilidad',
           data: {
               "laboratorio": $("#laboratorio").val(),
               "fecha": nuevaFecha,
               csrfmiddlewaretoken: csrftoken
           },
-          dataType: 'json'
+          contentType: false,
+          processData: false,
       }).done(function (data) {
          // Respuesta exitosa
           console.log(JSON.stringify(data, null, 2));
@@ -158,11 +160,11 @@ function getCookie(name) {
       }).fail(function (jqXHR, textStatus, errorThrown) {
           // Respuesta de error en el servidor
           console.error("Error en el servidor:", errorThrown);
-          alert("Hubo un error en el servidor. Por favor, inténtalo nuevamente más tarde o contacta al soporte técnico.");
+          alert("FAIL Hubo un error en el servidor. Por favor, inténtalo nuevamente más tarde o contacta al soporte técnico.");
       }).always(function (data) {
           // Respuesta de error en el frontend
           console.error("Error en el frontend:", data);
-          alert("Hubo un error en la aplicación. Por favor, inténtalo nuevamente o contacta al soporte técnico.");
+          alert("ALWAYS Hubo un error en la aplicación. Por favor, inténtalo nuevamente o contacta al soporte técnico.");
       });
     });
  });
