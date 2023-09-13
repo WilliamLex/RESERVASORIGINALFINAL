@@ -38,11 +38,11 @@ Agendas
                         </a>
                         <!-- templates/tu_template.html -->
                         <a href="{% url 'reservas:generar_informe_pdf' %}" class="btn btn-primary" style="background-color: rgba(201, 207, 215, 0.7);">Generar Informe laboratorios PDF</a>
-
-                        <a href="{% url 'reservas:disponibilidad_laboratorios' %}?dia={{ consulta.dia|date:" Y-m-d"
+                        <a href="{% url 'reservas:generar_informe_Agenda_pdf' %}" class="btn btn-primary" style="background-color: rgba(201, 207, 215, 0.7);">Generar Informe Agenda PDF</a>
+                        <!-- <a href="{% url 'reservas:disponibilidad_laboratorios' %}?dia={{ consulta.dia|date:" Y-m-d"
                             }}&horario={{ consulta.horario }}" class="text-info" style="text-decoration: none;">
-                            Ver disponibilidad
-                        </a>
+                            Ver disponibilidad generar_informe_Agenda_pdf
+                        </a> -->
                     </td>
                 </tr>
                 {% endfor %}

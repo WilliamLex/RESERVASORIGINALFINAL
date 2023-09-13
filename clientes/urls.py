@@ -9,6 +9,7 @@ urlpatterns = [
     path("consultas/", views.consulta_lista, name="consulta_list"),
     path("consultas/crear/", views.consulta_registro, name="consulta_create"),
     path("consultas/editar/<int:pk>/", views.consulta_actualizar, name="consulta_update"),
-    path("consultas/eliminar/<int:pk>/", views.consulta_excluir, name="consulta_delete"),
-    path("consulta/laboratorio/", views.consulta_laboratorio, name="consulta_lab"),
+    path("consultas/eliminar/<int:pk>/", views.consulta_excluir, name="consulta_delete"), 
+    path('consultas/generar_informe_clientes_pdf/', views.generar_informe_clientes_pdf, name='generar_informe_clientes_pdf'),
+    path("consulta/laboratorio/", views.consulta_laboratorio, name="consulta_laboratorio"), 
 ]

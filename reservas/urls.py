@@ -17,4 +17,9 @@ urlpatterns = [
     # ... Otras URLs ...
     path("reservas/disponibilidad-laboratorios/", views.disponibilidad_laboratorios, name="disponibilidad_laboratorios"),
     path('reservas/generar_informe_pdf/', views.generar_informe_pdf, name='generar_informe_pdf'),
+    path('reservas/generar_informe_Agenda_pdf/', views.generar_informe_Agenda_pdf, name='generar_informe_Agenda_pdf'),
+
+    # path('reservas/generar_informe_clientes_pdf/', views.generar_informe_clientes_pdf, name='generar_informe_clientes_pdf'),
+   
 ]
+

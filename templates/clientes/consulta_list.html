@@ -35,10 +35,7 @@ Mis Reservas
                                 role="button">
                                 <i class="fas fa-trash-alt"></i> Eliminar
                             </a>
-                            <a href="{% url 'reservas:disponibilidad_laboratorios' %}?dia={{ consulta.dia|date:" Y-m-d"
-                                }}&horario={{ consulta.horario }}" class="btn btn-info" role="button">
-                                Ver disponibilidad
-                            </a>
+                            <a href="{% url 'clientes:generar_informe_clientes_pdf' %}" class="btn btn-primary" style="background-color: rgba(144, 148, 155, 0.7);">Generar Informe usuarios PDF</a>
                         </div>
                     </td>
                 </tr>

@@ -10,6 +10,9 @@ from django.http import FileResponse
 from django.views import View
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
 from .models import Laboratorios, Agenda, Carreras
 
 
@@ -189,49 +192,134 @@ def disponibilidad_laboratorios(request):
     return render(request, "disponibilidad_laboratorios.html", context)
 
 
+
+
 def generar_informe_pdf(request):
     # Obtén datos para el informe (personalízalo según tus necesidades)
     reservas = Laboratorios.objects.all()
+
     # Crea un objeto HttpResponse con el tipo de contenido adecuado para PDF
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="informe_reservas.pdf"'
 
-    # Crea el objeto PDF, usando el objeto response como su "archivo"
-    p = canvas.Canvas(response, pagesize=letter)
+    # Crea el objeto PDF
+    doc = SimpleDocTemplate(response, pagesize=landscape(letter))
 
-    max_height = 700
+    # Contenedor para los elementos del PDF
+    elements = []
 
+    # Configura los estilos para el informe
+    styles = getSampleStyleSheet()
+    estilo_titulo = styles['Heading1']
+    estilo_normal = styles['Normal']
 
-    # Agrega contenido al PDF
-    p.drawString(100, 750, "Informe de Reservas de Laboratorio")
-    y = 700
-    
+    # Agrega el título al informe
+    titulo = Paragraph("Informe de Reservas de Laboratorio", estilo_titulo)
+    elements.append(titulo)
+    elements.append(Spacer(1, 12))  # Espacio entre el título y la tabla
+
+    # Crea una lista para los datos de las reservas
+    datos = []
+    encabezados = ["Nombre del Laboratorio", "Correo Electrónico", "Capacidad", "Teléfono", "Carrera", "Hora de Inicio", "Hora de Fin"]
+
+    datos.append(encabezados)
+
     for reserva in reservas:
-         # Verifica si se necesita crear una nueva página
-        if y <= 50:
-            p.showPage()  # Crea una nueva página
-            max_height = 700  # Reinicia la altura máxima
+        datos_reserva = [
+            reserva.nombre,
+            reserva.email,
+            reserva.capacidad,
+            reserva.telefono,
+            reserva.carreras,
+            reserva.hora_inicio.strftime('%H:%M'),
+            reserva.hora_fin.strftime('%H:%M')
+        ]
+        datos.append(datos_reserva)
 
-        y -= 20
-        p.drawString(100, y, f"Nombre del laboratorio: {reserva.nombre}")
-        y -= 15  # Salto de línea
-        p.drawString(100, y, f"Correo electrónico: {reserva.email}")
-        y -= 25  # Salto de línea más grande para separar laboratorios
-        # Agrega más campos según tu modelo
-        p.drawString(100, y, f"Capacidad: {reserva.capacidad }")
-        y -= 25  # Sa
-        p.drawString(100, y, f"Telefono: {reserva.telefono  }")
-        y -= 25 
-        p.drawString(100, y, f"Carrera: {reserva.carreras }") 
-        y -= 25 
-        p.drawString(100, y, f"Hora de inicio: {reserva.hora_inicio }") 
-        y -= 25 
-        p.drawString(100, y, f"Hora fin: {reserva.hora_fin }") 
-        y -= 25 
-     # Cierra el objeto PDF y retorna la respuesta
-    p.showPage()
-    p.save()
+    # Crea la tabla y establece el estilo
+    tabla = Table(datos)
+    tabla.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), (0.7, 0.7, 0.7)),
+        ('TEXTCOLOR', (0, 0), (-1, 0), (1, 1, 1)),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), (0.9, 0.9, 0.9)),
+        ('GRID', (0, 0), (-1, -1), 1, (0, 0, 0)),
+    ]))
+
+    # Agrega la tabla al contenido del PDF
+    elements.append(tabla)
+
+    # Construye el PDF
+    doc.build(elements)
+
     return response
+
+
+def generar_informe_Agenda_pdf(request):
+    # Obtén datos para el informe (personalízalo según tus necesidades)
+    reservas = Agenda.objects.all()
+
+    # Crea un objeto HttpResponse con el tipo de contenido adecuado para PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="informe_reservas.pdf"'
+
+    # Crea el objeto PDF
+    doc = SimpleDocTemplate(response, pagesize=landscape(letter))
+
+    # Contenedor para los elementos del PDF
+    elements = []
+
+    # Configura los estilos para el informe
+    styles = getSampleStyleSheet()
+    estilo_titulo = styles['Heading1']
+    estilo_normal = styles['Normal']
+
+    # Agrega el título al informe
+    titulo = Paragraph("Informe de Reservas de Laboratorio", estilo_titulo)
+    elements.append(titulo)
+    elements.append(Spacer(1, 12))  # Espacio entre el título y la tabla
+
+    # Crea una lista para los datos de las reservas
+    datos = []
+    encabezados = ["Nombre del Laboratorio", "Día","Horario", "Usuario", "Reservado"]
+
+    datos.append(encabezados)
+
+    for reserva in reservas:
+        datos_reserva = [
+            reserva.laboratorio,
+            reserva.dia,
+            reserva.horario,
+            reserva.user,
+            'Sí' if reserva.reservado else 'No'
+          
+        ]
+        datos.append(datos_reserva)
+
+    # Crea la tabla y establece el estilo
+    tabla = Table(datos)
+    tabla.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), (0.7, 0.7, 0.7)),
+        ('TEXTCOLOR', (0, 0), (-1, 0), (1, 1, 1)),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), (0.9, 0.9, 0.9)),
+        ('GRID', (0, 0), (-1, -1), 1, (0, 0, 0)),
+    ]))
+
+    # Agrega la tabla al contenido del PDF
+    elements.append(tabla)
+
+    # Construye el PDF
+    doc.build(elements)
+
+    return response
+  
+ 
+
 
 laboratorio_registro = LaboratoriosCreateView.as_view()
 laboratorio_lista = LaboratoriosListView.as_view()
@@ -244,4 +332,5 @@ agenda_lista = AgendaListView.as_view()
 agenda_eliminar = AgendaDeleteView.as_view()
 disponibilidad_laboratorios = disponibilidad_laboratorios
 generar_informe_pdf = generar_informe_pdf
-
+generar_informe_Agenda_pdf = generar_informe_Agenda_pdf
+# generar_informe_clientes_pdf = generar_informe_clientes_pdf
