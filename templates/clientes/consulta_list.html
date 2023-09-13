@@ -1,7 +1,7 @@
 {% extends "accounts/index.html" %}
 
 {% block title %}
-    Mis Reservas
+Mis Reservas
 {% endblock %}
 
 {% block accounts_container %}
@@ -27,13 +27,16 @@
                     <td>{{ consulta.agenda.get_horario_display }}</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <a href="{% url 'reservas:agendar_reserva_actualizar' consulta.id %}" class="btn btn-primary" role="button">
+                            <a href="{% url 'reservas:agendar_reserva_actualizar' consulta.id %}"
+                                class="btn btn-primary" role="button">
                                 <i class="fas fa-edit"></i> Actualizar
                             </a>
-                            <a href="{% url 'reservas:agendar_reserva_eliminar' consulta.id %}" class="btn btn-danger" role="button">
+                            <a href="{% url 'reservas:agendar_reserva_eliminar' consulta.id %}" class="btn btn-danger"
+                                role="button">
                                 <i class="fas fa-trash-alt"></i> Eliminar
                             </a>
-                            <a href="{% url 'reservas:disponibilidad_laboratorios' %}?dia={{ consulta.dia|date:"Y-m-d" }}&horario={{ consulta.horario }}" class="btn btn-info" role="button">
+                            <a href="{% url 'reservas:disponibilidad_laboratorios' %}?dia={{ consulta.dia|date:" Y-m-d"
+                                }}&horario={{ consulta.horario }}" class="btn btn-info" role="button">
                                 Ver disponibilidad
                             </a>
                         </div>
@@ -52,25 +55,25 @@
         color: #fff;
         padding: 20px;
     }
-  
+
     .form-horizontal .form-group label {
         font-weight: bold;
     }
-  
+
     .help-block {
         color: #dc3545;
     }
-  
+
     /* Cambiar el color de fondo del botón */
     .btn-primary {
         background-color: #676c70e9;
         border-color: #9ba0a5;
     }
-  
+
     /* Cambiar el color de fondo del botón al pasar el mouse */
     .btn-primary:hover {
         background-color: #8b8e91;
         border-color: #9ba0a5;
     }
-  </style>
+</style>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block title %}
-    Registro | {{ block.super }}
+Registro | {{ block.super }}
 {% endblock %}
 
 {% block container %}
@@ -12,6 +12,7 @@
         <div class="page-header">
             <h1>Programar Reserva Informática</h1>
         </div>
+        <div class="alert alert-danger" id="alert_programacion" hidden> </div>
         <form class="form-horizontal" method="post">
             {% csrf_token %}
             {% for error in form.non_field_errors %}
@@ -21,46 +22,46 @@
             {% endfor %}
             <fieldset>
                 <div class="form-group{% if form.laboratorio.errors %} has-error{% endif %}">
-                  <label for="{{ form.laboratorio.auto_id }}" class="col-md-3 control-label">
-                  {{ form.laboratorio.label }}</label>
-                  <div class="col-md-9">
-                    <select name="laboratorio" id="laboratorio" class="form-control">
-                        {% for lab in laboratorios_disponibles %}
+                    <label for="{{ form.laboratorio.auto_id }}" class="col-md-3 control-label">
+                        {{ form.laboratorio.label }}</label>
+                    <div class="col-md-9">
+                        <select name="laboratorio" id="laboratorio" class="form-control">
+                            {% for lab in laboratorios_disponibles %}
                             <option value="{{ lab.id }}">{{ lab.nombre }}</option>
-                        {% endfor %}
-                    </select>
+                            {% endfor %}
+                        </select>
 
-                    {% for error in form.laboratorio.errors %}
-                    <span class="help-block">{{ error }}</span>
-                    {% endfor %}
-                  </div>
+                        {% for error in form.laboratorio.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="form-group{% if form.dia.errors %} has-error{% endif %}">
-                  <label for="{{ form.dia.auto_id }}" class="col-md-3 control-label">
-                      {{ form.dia.label }}
-                  </label>
-                  <div class="col-md-9">
-                    {% render_field form.dia type="date" class="form-control" id="fecha" placeholder="12/08/2023" %}
-                    {% for error in form.dia.errors %}
-                    <span class="help-block">{{ error }}</span>
-                    {% endfor %}
-                  </div>
+                    <label for="{{ form.dia.auto_id }}" class="col-md-3 control-label">
+                        {{ form.dia.label }}
+                    </label>
+                    <div class="col-md-9">
+                        {% render_field form.dia type="date" class="form-control" id="fecha" placeholder="12/08/2023" %}
+                        {% for error in form.dia.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="form-group{% if form.horario.errors %} has-error{% endif %}">
-                  <label for="{{ form.horario.auto_id }}" class="col-md-3 control-label">
-                  {{ form.horario.label }}</label>
-                  <div class="col-md-9">
-                    {% render_field form.horario class="form-control" %}
+                    <label for="{{ form.horario.auto_id }}" class="col-md-3 control-label">
+                        {{ form.horario.label }}</label>
+                    <div class="col-md-9">
+                        {% render_field form.horario class="form-control" %}
 
-                    {% for error in form.horario.errors %}
-                    <span class="help-block">{{ error }}</span>
-                    {% endfor %}
-                  </div>
+                        {% for error in form.horario.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="form-group">
-                  <div class="col-md-9 col-md-offset-3">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                  </div>
+                    <div class="col-md-9 col-md-offset-3">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
                 </div>
             </fieldset>
         </form>
@@ -68,107 +69,99 @@
 </div>
 
 <style>
-  /* Estilos personalizados aquí */
-  .page-header {
-    
-      border: 4px solid #ddd;
-      background-color: #64676a;
-      color: #fff;
-      padding: 20px;
-  }
+    /* Estilos personalizados aquí */
+    .page-header {
 
-  .form-horizontal .form-group label {
-      font-weight: bold;
-  }
+        border: 4px solid #ddd;
+        background-color: #64676a;
+        color: #fff;
+        padding: 20px;
+    }
 
-  .help-block {
-      color: #dc3545;
-  }
+    .form-horizontal .form-group label {
+        font-weight: bold;
+    }
 
-  /* Cambiar el color de fondo del botón */
-  .btn-primary {
-      background-color: #676c70e9;
-      border-color: #9ba0a5;
-  }
+    .help-block {
+        color: #dc3545;
+    }
 
-  /* Cambiar el color de fondo del botón al pasar el mouse */
-  .btn-primary:hover {
-      background-color: #8b8e91;
-      border-color: #9ba0a5;
-  }
+    /* Cambiar el color de fondo del botón */
+    .btn-primary {
+        background-color: #676c70e9;
+        border-color: #9ba0a5;
+    }
+
+    /* Cambiar el color de fondo del botón al pasar el mouse */
+    .btn-primary:hover {
+        background-color: #8b8e91;
+        border-color: #9ba0a5;
+    }
 </style>
 {% endblock %}
 
 {% block scripts %}
 <script>
 
-// Función para establecer una cookie, que será necesario para las solicitudes Ajax con Django
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
+    // Función para establecer una cookie, que será necesario para las solicitudes Ajax con Django
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
             }
         }
+        return cookieValue;
     }
-    return cookieValue;
-}
 
- $(document).ready(function() {
-    // Selecciona el elemento de fecha por su ID
-    var fechaElemento = $("#fecha");
+    $(document).ready(function () {
+        // Selecciona el elemento de fecha por su ID
+        var fechaElemento = $("#fecha");
 
-    // Agrega un controlador de eventos onchange
-    fechaElemento.on("change", function() {
-        
-      // El código que deseas ejecutar cuando cambie la fecha va aquí
-      var nuevaFecha = fechaElemento.val();
-      
-      // Obtiene una cookie csrftoken
-      var csrftoken = getCookie('csrftoken');
-      console.log("laboratorio: "+ $("#laboratorio").val())
-      console.log("Fecha seleccionada:", nuevaFecha);
+        // Agrega un controlador de eventos onchange
+        fechaElemento.on("change", function () {
 
-      $.ajax({
-          type: 'POST',
-          url: 'http://127.0.0.1:8000/reservas/consultar-disponibilidad',
-          data: {
-              "laboratorio": $("#laboratorio").val(),
-              "fecha": nuevaFecha,
-              csrfmiddlewaretoken: csrftoken
-          },
-          contentType: false,
-          processData: false,
-      }).done(function (data) {
-         // Respuesta exitosa
-          console.log(JSON.stringify(data, null, 2));
+            // El código que deseas ejecutar cuando cambie la fecha va aquí
+            var nuevaFecha = fechaElemento.val();
 
-          // Rellener select de horarios con la información que proviene en la variable "data"
-          var selectHorarios = $("#select-horarios");
-          selectHorarios.empty(); // Limpiar opciones anteriores
+            // Obtiene una cookie csrftoken
+            var csrftoken = getCookie('csrftoken');
 
-          data.horarios_disponibles.forEach(function (horario) {
-              // Crear una opción para cada horario disponible
-              var opcion = $("<option>");
-              opcion.val(horario.id);
-              opcion.text(horario.hora);
-              selectHorarios.append(opcion);
-          });
+            $.ajax({
+                type: 'POST',
+                url: 'http://127.0.0.1:8000/reservas/consultar_disponibilidad/',
+                data: {
+                    "laboratorio": $("#laboratorio").val(),
+                    "fecha": nuevaFecha,
+                    csrfmiddlewaretoken: csrftoken
+                },
+                dataType: 'json'
+            }).done(function (data) {
+                // Respuesta exitosa
+                // Rellener select de horarios con la información que proviene en la variable "data"
+                var selectHorarios = $("#id_horario");
+                selectHorarios.html('<option value="" selected>---------</option>');// Limpiar opciones anteriores
+                if (data.horarios_disponibles.length == 0) {
+                    $('#alert_programacion').html('<p>El laboratorio no cuenta con horarios disponible</p>').show();
+                } else {
+                    $('#alert_programacion').empty().hide();
+                    data.horarios_disponibles.forEach(function (horario) {
+                        // Crear una opción para cada horario disponible
+                        selectHorarios.append(`<option value="${horario[0]}">${horario[1]}</option>`);
+                    });
+                }
 
-      }).fail(function (jqXHR, textStatus, errorThrown) {
-          // Respuesta de error en el servidor
-          console.error("Error en el servidor:", errorThrown);
-          alert("FAIL Hubo un error en el servidor. Por favor, inténtalo nuevamente más tarde o contacta al soporte técnico.");
-      }).always(function (data) {
-          // Respuesta de error en el frontend
-          console.error("Error en el frontend:", data);
-          alert("ALWAYS Hubo un error en la aplicación. Por favor, inténtalo nuevamente o contacta al soporte técnico.");
-      });
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                // Respuesta de error en el servidor
+                console.error("Error en el servidor:", errorThrown);
+                alert("FAIL Hubo un error en el servidor. Por favor, inténtalo nuevamente más tarde o contacta al soporte técnico.");
+            });
+        });
     });
- });
-        </script>
+</script>
 {% endblock %}
