@@ -4,12 +4,12 @@ from .models import Cliente, Consulta
     
 class ClientAdmin(admin.ModelAdmin):
     list_display = [
-        'telefono', 'carrera', 'nombre_completo', 'fecha_inicio', 'hora_inicio', 'hora_fin',
+        'telefono', 'carrera', 'laboratorio', 'nombre_completo', 'fecha_inicio', 'hora_inicio', 'hora_fin',
     ]
     
 class ConsultaAdmin(admin.ModelAdmin):
     list_display = [
-        'agenda', 'cliente',
+        'agenda', 'cliente', 'horario_cliente',
     ]
     
     

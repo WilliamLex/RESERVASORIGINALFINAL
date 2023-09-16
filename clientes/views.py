@@ -1,12 +1,16 @@
 import colorsys
 from msilib import Table
 import colorama
+from django.shortcuts import redirect
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
+import reservas
+
+from reservas.models import Laboratorios
 from .models import Cliente, Consulta, Agenda
 from django import forms
 from django.http import FileResponse
@@ -17,6 +21,11 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors 
 from datetime import datetime
+from reportlab.lib.pagesizes import landscape
+import os
+import datetime
+
+
 
 
 class ClienteCreateView(LoginRequiredMixin, CreateView):
@@ -34,7 +43,7 @@ class ClienteUpdateView(LoginRequiredMixin, UpdateView):
     model = Cliente
     login_url = reverse_lazy("accounts:login")
     template_name = "accounts/update_user.html"
-    fields = ["nombre_completo", "telefono", "carrera", "fecha_inicio", "hora_inicio", "hora_fin"]
+    fields = ["nombre_completo", "telefono", "carrera", "laboratorio", "fecha_inicio", "hora_inicio", "hora_fin"]
     success_url = reverse_lazy("accounts:index")
 
     def get_object(self):
@@ -143,7 +152,8 @@ class ConsultaUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.cliente = Cliente.objects.get(user=self.request.user)
         return super().form_valid(form)
-
+    
+    
 
 class ConsultaDeleteView(LoginRequiredMixin, DeleteView):
     model = Consulta
@@ -175,16 +185,138 @@ class ConsultaListView(LoginRequiredMixin, ListView):
     
 
 def generar_informe_clientes_pdf(request):
+#    # Obtén datos para el informe (personalízalo según tus necesidades)
+#     clientes = Cliente.objects.all()
 
-# Obtén datos para el informe (personalízalo según tus necesidades)
-    clientes = Cliente.objects.all()
+#     # Configura el tamaño de la hoja en orientación horizontal (landscape)
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = 'attachment; filename="informe_clientes.pdf"'
+#     doc = SimpleDocTemplate(response, pagesize=landscape(letter))
 
-    # Crea un objeto HttpResponse con el tipo de contenido adecuado para PDF
+#     # Contenedor para los elementos del PDF
+#     elements = []
+
+#     # Configura los estilos para el informe
+#     styles = getSampleStyleSheet()
+#     estilo_titulo = styles['Heading1']
+#     estilo_normal = styles['Normal']
+
+#     # Agrega el título al informe
+#     titulo = Paragraph("Informe de Detalles de Reserva de Laboratorios", estilo_titulo)
+#     elements.append(titulo)
+
+#     # Crea una lista para los datos de los clientes
+#     datos = []
+#     encabezados = ["Teléfono", "Carrera", "Laboratorios", "Nombres", "Fecha de Inicio", "Hora de Inicio", "Hora de Fin", "Usuario"]
+#     datos.append(encabezados)
+
+#     for cliente in clientes:
+#         datos_cliente = [
+#             cliente.telefono or "",
+#             cliente.carrera or "",
+#             cliente.laboratorio or "",
+#             cliente.nombre_completo or "",
+#             cliente.fecha_inicio.strftime('%d/%m/%Y') if cliente.fecha_inicio else "",
+#             cliente.hora_inicio.strftime('%H:%M') if cliente.hora_inicio else "",
+#             cliente.hora_fin.strftime('%H:%M') if cliente.hora_fin else "",
+#             cliente.user.username if cliente.user else "",
+#         ]
+#         datos.append(datos_cliente)
+
+#     # Crea la tabla y establece el estilo
+#     tabla = Table(datos)
+#     tabla.setStyle(TableStyle([
+#         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+#         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+#         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+#         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+#         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+#         ('BACKGROUND', (0, 1), (-1, 1), colors.beige),
+#         ('GRID', (0, 0), (-1, -1), 1, colors.black),
+#     ]))
+
+#     # Ajusta automáticamente el espacio de las columnas al contenido
+#     tabla.autoSpace = True
+
+#     # Agrega la tabla al contenido del PDF
+#     elements.append(tabla)
+
+#     # Construye el PDF
+#     doc.build(elements)
+
+#     return response
+
+# # Obtén datos para el informe (personalízalo según tus necesidades)
+    # clientes = Cliente.objects.all()
+
+    # # Configura el tamaño de la hoja en orientación horizontal (landscape)
+    # response = HttpResponse(content_type='application/pdf')
+    # response['Content-Disposition'] = 'attachment; filename="informe_reservas_por_cliente.pdf"'
+    # doc = SimpleDocTemplate(response, pagesize=landscape(letter))
+
+    # # Contenedor para los elementos del PDF
+    # elements = []
+
+    # # Configura los estilos para el informe
+    # styles = getSampleStyleSheet()
+    # estilo_titulo = styles['Heading1']
+    # estilo_normal = styles['Normal']
+
+    # # Agrega el título al informe
+    # titulo = Paragraph("Informe de Reservas de Laboratorio por Cliente", estilo_titulo)
+    # elements.append(titulo)
+
+    # # Crea una lista para los datos de las reservas
+    # datos = []
+    # encabezados = ["Cliente", "Fecha de Reserva", "Laboratorio", "Hora de Inicio", "Hora de Fin"]
+    # datos.append(encabezados)
+
+    # for cliente in clientes:
+    #     reservas_cliente = Consulta.objects.filter(cliente=cliente)
+    #     for reserva in reservas_cliente:
+    #         datos_reserva = [
+    #             cliente.nombre_completo if cliente.nombre_completo else "",
+    #             reserva.agenda.dia.strftime('%d/%m/%Y') if reserva.agenda else "",
+    #             reserva.agenda.laboratorio.nombre if reserva.agenda and reserva.agenda.laboratorio else "",
+    #             reserva.agenda.horario if reserva.agenda else "",
+    #             "",  # No se proporciona hora de fin en el modelo Consulta
+    #         ]
+    #         datos.append(datos_reserva)
+
+    # # Crea la tabla y establece el estilo
+    # tabla = Table(datos)
+    # tabla.setStyle(TableStyle([
+    #     ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+    #     ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+    #     ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+    #     ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+    #     ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+    #     ('BACKGROUND', (0, 1), (-1, 1), colors.beige),
+    #     ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    # ]))
+
+    # # Ajusta automáticamente el espacio de las columnas al contenido
+    # tabla.autoSpace = True
+
+    # # Agrega la tabla al contenido del PDF
+    # elements.append(tabla)
+
+    # # Construye el PDF
+    # doc.build(elements)
+
+    # return response
+
+   # Obtén datos para el informe (personalízalo según tus necesidades)
+   # Filtra las consultas que tengan un horario seleccionado por el cliente
+     # Filtra las consultas que tengan un horario seleccionado por el cliente
+  # Filtra las consultas que tienen un horario seleccionado por el cliente
+ # Filtra las consultas que tengan un horario seleccionado por el cliente
+    consultas = Consulta.objects.exclude(horario_cliente__isnull=True)
+    
+    # Configura el tamaño de la hoja en orientación horizontal (landscape)
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="informe_clientes.pdf"'
-
-    # Crea el objeto PDF
-    doc = SimpleDocTemplate(response, pagesize=letter)
+    response['Content-Disposition'] = 'attachment; filename="informe_reservas_por_cliente.pdf"'
+    doc = SimpleDocTemplate(response, pagesize=landscape(letter))
 
     # Contenedor para los elementos del PDF
     elements = []
@@ -195,59 +327,44 @@ def generar_informe_clientes_pdf(request):
     estilo_normal = styles['Normal']
 
     # Agrega el título al informe
-    titulo = Paragraph("Informe de Detalles de Reserva de Laboratorios", estilo_titulo)
+    titulo = Paragraph("Informe de Reservas de Laboratorio por Cliente", estilo_titulo)
     elements.append(titulo)
-    elements.append(Spacer(1, 12))  # Espacio entre el título y la tabla
 
-    # Crea una lista para los datos de los clientes
+    # Crea una lista para los datos de las reservas
     datos = []
-    encabezados = ["Teléfono", "Carrera", "Nombres Completos", "Fecha de Inicio", "Hora de Inicio", "Hora de Fin", "Usuario"]
-
+    encabezados = ["Cliente", "Fecha de Reserva", "Laboratorio", "Horario"]
     datos.append(encabezados)
 
-    for cliente in clientes:
-        datos_cliente = []
-        # Verifica si el campo es None antes de formatearlo
-        if cliente.telefono is not None:
-            datos_cliente.append(cliente.telefono)
-        else:
-            datos_cliente.append("")  # Agrega una cadena vacía si es None
-        if cliente.carrera is not None:
-            datos_cliente.append(cliente.carrera)
-        else:
-            datos_cliente.append("")
-        if cliente.nombre_completo is not None:
-            datos_cliente.append(cliente.nombre_completo)
-        else:
-            datos_cliente.append("")
-        if cliente.fecha_inicio is not None:
-            datos_cliente.append(cliente.fecha_inicio.strftime('%d/%m/%Y'))
-        else:
-            datos_cliente.append("")
-        if cliente.hora_inicio is not None:
-            datos_cliente.append(cliente.hora_inicio.strftime('%H:%M'))
-        else:
-            datos_cliente.append("")
-        if cliente.hora_fin is not None:
-            datos_cliente.append(cliente.hora_fin.strftime('%H:%M'))
-        else:
-            datos_cliente.append("")
-        if cliente.user is not None:
-            datos_cliente.append(cliente.user.username)
-        else:
-            datos_cliente.append("")
+    for consulta in consultas:
+        cliente = consulta.cliente
+        reserva = consulta.agenda
 
-        datos.append(datos_cliente)
+        # Verifica que la reserva esté completa (con laboratorio y horario)
+        if reserva and reserva.laboratorio and reserva.horario:
+            datos_reserva = [
+                cliente.nombre_completo if cliente.nombre_completo else "",
+                reserva.dia.strftime('%d/%m/%Y'),
+                reserva.laboratorio.nombre,
+                # cliente.obtener_carrera() if cliente.obtener_carrera() else "",  # Obtener la carrera del laboratorio
+                reserva.get_horario_display(),  # Obtiene el horario en formato legible
+                  # No se proporciona hora de fin en el modelo Consulta
+            ]
+            datos.append(datos_reserva)
 
     # Crea la tabla y establece el estilo
     tabla = Table(datos)
-    tabla.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                               ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                               ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                               ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                               ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                               ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                               ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
+    tabla.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, 1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+
+    # Ajusta automáticamente el espacio de las columnas al contenido
+    tabla.autoSpace = True
 
     # Agrega la tabla al contenido del PDF
     elements.append(tabla)
@@ -256,6 +373,7 @@ def generar_informe_clientes_pdf(request):
     doc.build(elements)
 
     return response
+
 cliente_registro = ClienteCreateView.as_view()
 cliente_actualizar = ClienteUpdateView.as_view()
 consulta_lista = ConsultaListView.as_view()
