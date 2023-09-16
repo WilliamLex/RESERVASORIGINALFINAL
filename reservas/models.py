@@ -25,7 +25,10 @@ class Laboratorios(models.Model):
     )
 
     telefono = models.CharField(verbose_name="Telefono", validators=[phone_regex], max_length=17, null=True, blank=True)
-    carreras = ForeignKey(Carreras, on_delete=models.CASCADE, related_name="reservas")
+     # Corrige el nombre del campo relacionado a Carreras
+    carreras = models.ForeignKey(Carreras, on_delete=models.CASCADE, verbose_name="reservas")
+    
+    # carreras = ForeignKey(Carreras, on_delete=models.CASCADE, related_name="reservas")
     hora_inicio = models.TimeField(verbose_name="Hora de inicio", default=time(7, 30))
     hora_fin = models.TimeField(verbose_name="Hora de fin", default=time(17, 30))
 
