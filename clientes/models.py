@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db.models.fields.related import ForeignKey, OneToOneField
 from django.core.validators import RegexValidator
 from django.db import models
-from reservas.models import Agenda, Laboratorios
+from reservas.models import Agenda, Carreras, Laboratorios
 
 
 class Cliente(models.Model):
@@ -14,7 +14,13 @@ class Cliente(models.Model):
 
     telefono = models.CharField(verbose_name="Telefono", validators=[phone_regex], max_length=17, null=True, blank=True)
 
-    carrera = models.CharField(max_length=100)  # Cambiamos la longitud para permitir más caracteres
+    # carrera = models.CharField(max_length=100)  # Cambiamos la longitud para permitir más caracteres
+    carrera = models.ForeignKey(Carreras,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Carrera"
+    )
 
     # carrera = models.ForeignKey(Laboratorios, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Carrera", related_name="clientes_carrera")
     
